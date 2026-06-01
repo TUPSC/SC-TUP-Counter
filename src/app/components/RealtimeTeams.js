@@ -7,12 +7,13 @@ export default function RealtimeTeams({ initialTeams }) {
 
   const [teams, setTeams] = useState(initialTeams);
 
-  const colors = [
-    "linear-gradient(135deg, #f6b73c, #f28b30)",
-    "linear-gradient(135deg, #f78fb3, #f368a0)",
-    "linear-gradient(135deg, #74b9ff, #4a69bd)",
-    "linear-gradient(135deg, #55efc4, #00b894)",
-  ];
+const images = [
+  "/p1.JPG",
+  "/p2.JPG",
+  "/p3.JPG",
+  "/p4.JPG",
+  "/p5.JPG",
+];
 
   useEffect(() => {
 
@@ -49,19 +50,34 @@ export default function RealtimeTeams({ initialTeams }) {
         <div
           key={team.id}
           style={{
-            background: colors[index % colors.length],
+            backgroundImage: `url(${images[index % images.length]})`,
+backgroundSize: "cover",
+backgroundPosition: "center",
+backgroundRepeat: "no-repeat",
             borderRadius: "28px",
             padding: "30px",
             marginBottom: "24px",
             color: "white",
             boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+            position: "relative",
+overflow: "hidden",
           }}
         >
+          <div
+  style={{
+    position: "absolute",
+    inset: 0,
+    background: "rgba(0,0,0,0.12)",
+    backdropFilter: "blur(2px)",
+  }}
+/>
           <div
             style={{
               fontSize: "22px",
               opacity: 0.9,
               marginBottom: "12px",
+              position: "relative",
+zIndex: 2,
             }}
           >
             พรรค
@@ -73,6 +89,8 @@ export default function RealtimeTeams({ initialTeams }) {
               margin: 0,
               marginBottom: "20px",
               fontWeight: "bold",
+              position: "relative",
+zIndex: 2,
             }}
           >
             {team.name}
@@ -84,6 +102,8 @@ export default function RealtimeTeams({ initialTeams }) {
               height: "2px",
               background: "rgba(255,255,255,0.4)",
               marginBottom: "20px",
+              position: "relative",
+zIndex: 2,
             }}
           />
 
@@ -92,6 +112,8 @@ export default function RealtimeTeams({ initialTeams }) {
               fontSize: "72px",
               fontWeight: "bold",
               lineHeight: 1,
+              position: "relative",
+zIndex: 2,
             }}
           >
             {team.score}
@@ -102,6 +124,8 @@ export default function RealtimeTeams({ initialTeams }) {
               fontSize: "28px",
               fontWeight: "bold",
               letterSpacing: "2px",
+              position: "relative",
+zIndex: 2,
             }}
           >
             POINTS
