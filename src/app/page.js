@@ -63,11 +63,18 @@ export default async function Home() {
         <RealtimeTeams initialTeams={teams} />
 
         {/* ERROR */}
-        {error && (
-          <p style={{ color: "red", textAlign: "center" }}>
-            Error loading data
-          </p>
-        )}
+       {error && (
+  <pre
+    style={{
+      color: "red",
+      textAlign: "center",
+      whiteSpace: "pre-wrap",
+      fontSize: "14px",
+    }}
+  >
+    {JSON.stringify(error, null, 2)}
+  </pre>
+)}
       </div>
 
       {/* FOOTER */}
