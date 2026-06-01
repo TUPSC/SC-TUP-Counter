@@ -88,24 +88,13 @@ zIndex: 2,
             พรรค
           </div>
 
-          <h2
-            style={{
-              fontSize: "34px",
-              margin: 0,
-              marginBottom: "20px",
-              fontWeight: "bold",
-              position: "relative",
-zIndex: 2,
-            }}
-          >
-            {team.name}
-          </h2>
+   
 
           <div
             style={{
               width: "100%",
               height: "2px",
-              background: "rgba(255,255,255,0.4)",
+              background: "rgba(255,255,255,0.7)",
               marginBottom: "20px",
               position: "relative",
 zIndex: 2,
@@ -114,12 +103,14 @@ zIndex: 2,
 
       <div
   style={{
-              fontSize: "88px",
+              fontSize: "96px",
               fontWeight: "bold",
               lineHeight: 1,
               position: "relative",
               zIndex: 2,
-              marginTop: "40px",
+              marginTop: "auto",
+              paddingTop: "40px",
+              letterSpacing: "2px",
             }}
           >
             {team.score}
@@ -135,7 +126,7 @@ zIndex: 2,
 zIndex: 2,
             }}
           >
-            POINTS
+          
           </div>
         </div>
       ))}
