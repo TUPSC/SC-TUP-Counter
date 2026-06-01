@@ -60,15 +60,20 @@ backgroundRepeat: "no-repeat",
             color: "white",
             boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
             position: "relative",
-overflow: "hidden",
+            overflow: "hidden",
+
+           minHeight: "320px",
+           display: "flex",
+           flexDirection: "column",
+           justifyContent: "space-between",
           }}
         >
           <div
   style={{
     position: "absolute",
     inset: 0,
-    background: "rgba(0,0,0,0.12)",
-    backdropFilter: "blur(2px)",
+    background: "rgba(0,0,0,0.18)",
+
   }}
 />
           <div
@@ -85,7 +90,7 @@ zIndex: 2,
 
           <h2
             style={{
-              fontSize: "42px",
+              fontSize: "34px",
               margin: 0,
               marginBottom: "20px",
               fontWeight: "bold",
@@ -107,13 +112,14 @@ zIndex: 2,
             }}
           />
 
-          <div
-            style={{
-              fontSize: "72px",
+      <div
+  style={{
+              fontSize: "88px",
               fontWeight: "bold",
               lineHeight: 1,
               position: "relative",
-zIndex: 2,
+              zIndex: 2,
+              marginTop: "40px",
             }}
           >
             {team.score}
@@ -121,7 +127,8 @@ zIndex: 2,
 
           <div
             style={{
-              fontSize: "28px",
+              fontSize: "22px",
+              letterSpacing: "4px",
               fontWeight: "bold",
               letterSpacing: "2px",
               position: "relative",
