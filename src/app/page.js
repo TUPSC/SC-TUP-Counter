@@ -14,6 +14,7 @@ export default async function Home() {
     <main
       style={{
         minHeight: "100vh",
+        overflowX: "hidden",
         background: "#f5f5f5",
         padding: "20px",
         fontFamily: "Arial, sans-serif",
@@ -22,42 +23,68 @@ export default async function Home() {
       {/* MAIN CONTENT */}
       <div
         style={{
-          maxWidth: "700px",
+          maxWidth: "1150px",
           margin: "0 auto",
         }}
       >
-        {/* TOP LOGO */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "20px",
-          }}
-        >
-          <img
-            src="/logo.png"
-            alt="logo"
-            style={{
-              width: "180px",
-              objectFit: "contain",
-            }}
-          />
-        </div>
 
-        {/* TITLE */}
-        <h1
-          style={{
-            textAlign: "center",
-            fontSize: "48px",
-            marginBottom: "40px",
-            color: "#142c6e",
-          }}
-        >
-          TUPSC Dashboard
-        </h1>
+    {/* HEADER ROW */}
+<div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
 
-        {/* COUNTDOWN */}
-        <Countdown />
+    gap: "24px",
+
+    marginBottom: "30px",
+
+    flexWrap: "wrap",
+  }}
+>
+
+  {/* LOGO */}
+  <img
+    src="/logo.png"
+    alt="logo"
+    style={{
+      width: "220px",
+      objectFit: "contain",
+    }}
+  />
+
+  {/* RIGHT SIDE */}
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+    }}
+  >
+
+    <h1
+      style={{
+        fontSize: "44px",
+        color: "#142c6e",
+        margin: 0,
+        lineHeight: 1.1,
+      }}
+    >
+      TUP Election 2026
+    </h1>
+
+    <div
+      style={{
+        transform: "scale(0.82)",
+        transformOrigin: "left center",
+        marginTop: "-10px",
+      }}
+    >
+      <Countdown />
+    </div>
+
+  </div>
+</div>
 
         {/* REALTIME LEADERBOARD */}
         <RealtimeTeams initialTeams={teams} />
@@ -81,7 +108,7 @@ export default async function Home() {
       <div
         style={{
           maxWidth: "700px",
-          margin: "80px auto 0 auto",
+          margin: "140px auto 0 auto",
           position: "relative",
           overflow: "hidden",
           borderRadius: "28px",
