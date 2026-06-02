@@ -76,60 +76,29 @@ backgroundRepeat: "no-repeat",
 
   }}
 />
-          <div
-            style={{
-              fontSize: "22px",
-              opacity: 0.9,
-              marginBottom: "12px",
-              position: "relative",
-zIndex: 2,
-            }}
-          >
-            พรรค
-          </div>
-
-   
-
-          <div
-            style={{
-              width: "100%",
-              height: "2px",
-              background: "rgba(255,255,255,0.7)",
-              marginBottom: "20px",
-              position: "relative",
-zIndex: 2,
-            }}
-          />
-
       <div
   style={{
-              fontSize: "96px",
-              fontWeight: "bold",
-              lineHeight: 1,
-              position: "relative",
-              zIndex: 2,
-              marginTop: "auto",
-              paddingTop: "40px",
-              letterSpacing: "2px",
-            }}
+  position: "absolute",
+
+  left: "58px",
+  bottom: "26px",
+
+  fontSize: "84px",
+  fontWeight: "bold",
+  lineHeight: 1,
+
+  color: "white",
+
+  zIndex: 2,
+}}
           >
             {team.score}
           </div>
 
-          <div
-            style={{
-              fontSize: "22px",
-              letterSpacing: "4px",
-              fontWeight: "bold",
-              letterSpacing: "2px",
-              position: "relative",
-zIndex: 2,
-            }}
-          >
-          
-          </div>
         </div>
       ))}
     </>
   );
 }
+//test
+//test2
