@@ -80,10 +80,15 @@ backgroundRepeat: "no-repeat",
   style={{
   position: "absolute",
 
-  left: "58px",
-  bottom: "26px",
+  left: "50%",
+transform: "translateX(-50%)",
 
-  fontSize: "84px",
+bottom: "7%",
+width: "100%",
+
+textAlign: "center",
+
+  fontSize: "clamp(72px, 7vw, 92px)",
   fontWeight: "bold",
   lineHeight: 1,
 
