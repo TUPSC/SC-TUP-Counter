@@ -81,12 +81,12 @@ style={{
   position: "absolute",
 
   right: "14%",
-  bottom: "11%",
+  bottom: "18%",
 
   width: "42%",
   textAlign: "center",
 
-  fontSize: "clamp(72px, 7vw, 92px)",
+  fontSize: "clamp(58px, 5.8vw, 76px)",
   fontWeight: "bold",
   lineHeight: 1,
 
