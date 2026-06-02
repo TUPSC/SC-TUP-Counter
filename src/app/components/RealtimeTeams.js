@@ -77,16 +77,14 @@ backgroundRepeat: "no-repeat",
   }}
 />
       <div
-  style={{
+style={{
   position: "absolute",
 
-  left: "50%",
-transform: "translateX(-50%)",
+  right: "14%",
+  bottom: "11%",
 
-bottom: "7%",
-width: "100%",
-
-textAlign: "center",
+  width: "42%",
+  textAlign: "center",
 
   fontSize: "clamp(72px, 7vw, 92px)",
   fontWeight: "bold",
@@ -95,6 +93,8 @@ textAlign: "center",
   color: "white",
 
   zIndex: 2,
+
+  textShadow: "0 4px 12px rgba(0,0,0,0.25)",
 }}
           >
             {team.score}
