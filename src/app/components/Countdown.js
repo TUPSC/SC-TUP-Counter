@@ -48,7 +48,7 @@ const targetDate = new Date(Date.now() + 2 * 60 * 1000);
         textAlign: "center",
         fontSize: "72px",
         fontWeight: "bold",
-        color: "#142c6e",
+        color: "white",
         marginBottom: "40px",
       }}
     >

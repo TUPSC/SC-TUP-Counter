@@ -9,12 +9,23 @@ export default function RealtimeTeams({ initialTeams }) {
 
   const [viewMode, setViewMode] = useState("desktop");
 
+  const isMobile = viewMode === "mobile";
+
+  /* FIXED TEAM ORDER */
+  const filteredTeams = teams
+    .filter(
+      (team) =>
+        team.name !== "ไม่ประสงค์ลงคะแนน"
+    )
+    .sort((a, b) => a.id - b.id);
+
+  /* FIXED IMAGE ORDER */
   const images = [
-    "/p1.JPG",
-    "/p2.JPG",
-    "/p3.JPG",
-    "/p4.JPG",
-    "/p5.JPG",
+    "/p1.JPG", // team id 1
+    "/p2.JPG", // team id 2
+    "/p3.JPG", // team id 3
+    "/p4.JPG", // team id 4
+    "/p5.JPG", // team id 5
   ];
 
   useEffect(() => {
@@ -32,8 +43,7 @@ export default function RealtimeTeams({ initialTeams }) {
 
           const { data } = await supabase
             .from("team")
-            .select("*")
-            .order("score", { ascending: false });
+            .select("*");
 
           setTeams(data || []);
         }
@@ -47,242 +57,179 @@ export default function RealtimeTeams({ initialTeams }) {
   }, []);
 
   return (
+
     <div
       style={{
-  display: "grid",
+        display: "grid",
 
-  justifyItems: "center",
+        justifyItems: "center",
 
-  gridTemplateColumns:
-    viewMode === "mobile"
-      ? "1fr"
-      : "1fr 1fr",
+        gridTemplateColumns:
+          isMobile
+            ? "1fr"
+            : "1fr 1fr",
 
-  width: "100%",
+        width: "100%",
 
-  maxWidth:
-    viewMode === "mobile"
-      ? "100%"
-      : "1200px",
+        maxWidth: "1320px",
 
-  padding:
-    viewMode === "mobile"
-      ? "0 16px"
-      : "0",
+        margin: "0 auto",
 
-  columnGap: "54px",
+        padding:
+          isMobile
+            ? "0 16px"
+            : "0 20px",
 
-  rowGap: "28px",
+        columnGap: "56px",
 
-  marginTop: "-20px",
+        rowGap: "42px",
 
-  position: "relative",
-}}
-    >
+        marginTop: "40px",
 
-  {/* TOP NAVBAR */}
-<div
-  style={{
-    position: "sticky",
-
-    top: 0,
-
-    zIndex: 9999,
-
-    width: "100%",
-
-    display: "flex",
-
-    justifyContent: "space-between",
-
-    alignItems: "center",
-
-    padding: "16px 20px",
-
-    background: "rgba(10,10,20,0.82)",
-
-    backdropFilter: "blur(16px)",
-
-    borderBottom:
-      "1px solid rgba(255,255,255,0.08)",
-
-    borderRadius:
-      viewMode === "mobile"
-        ? "0 0 24px 24px"
-        : "0 0 28px 28px",
-
-    marginBottom: "30px",
-  }}
->
-  
-  {/* LEFT SIDE */}
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: "12px",
-    }}
-  >
-
-    {/* HAMBURGER */}
-    <button
-      style={{
-        border: "none",
-
-        background:
-          "rgba(255,255,255,0.08)",
-
-        color: "white",
-
-        width: "46px",
-        height: "46px",
-
-        borderRadius: "14px",
-
-        fontSize: "22px",
-
-        cursor: "pointer",
+        position: "relative",
       }}
     >
-      ☰
-    </button>
 
-    {/* CURRENT TAB */}
-    <div
-      style={{
-        color: "white",
+      {/* VIEW TOGGLE */}
+      <div
+        style={{
+          position: "absolute",
 
-        fontWeight: "600",
+          top: "-145px",
 
-        fontSize:
-          viewMode === "mobile"
-            ? "16px"
-            : "18px",
-      }}
-    >
-      President Election
-    </div>
+          right: "24px",
 
-  </div>
+          display: "flex",
 
-  {/* RIGHT SIDE */}
-  <div
-    style={{
-      display: "flex",
-      gap: "10px",
-    }}
-  >
-    <button
-      onClick={() => setViewMode("mobile")}
-      style={{
-        border: "none",
+          gap: "12px",
 
-        padding: "10px 14px",
+          zIndex: 100,
+        }}
+      >
 
-        borderRadius: "12px",
-
-        cursor: "pointer",
-
-        background:
-          viewMode === "mobile"
-            ? "#3b82f6"
-            : "rgba(255,255,255,0.08)",
-
-        color: "white",
-      }}
-    >
-      📱
-    </button>
-
-    <button
-      onClick={() => setViewMode("desktop")}
-      style={{
-        border: "none",
-
-        padding: "10px 14px",
-
-        borderRadius: "12px",
-
-        cursor: "pointer",
-
-        background:
-          viewMode === "desktop"
-            ? "#3b82f6"
-            : "rgba(255,255,255,0.08)",
-
-        color: "white",
-      }}
-    >
-      💻
-    </button>
-  </div>
-
-</div>
-
-
-      {/* TEAM CARDS */}
-      {teams.map((team, index) => (
-        <div
-          key={team.id}
+        {/* MOBILE */}
+        <button
+          onClick={() => setViewMode("mobile")}
           style={{
-            
-      width:
-  viewMode === "mobile"
-    ? "100%"
-    : "100%",
+            border: "none",
 
-
-    gridColumn:
-  viewMode === "desktop" &&
-  index === teams.length - 1 &&
-  teams.length % 2 !== 0
-    ? "1 / span 2"
-    : "auto",
-    maxWidth:
-  viewMode === "desktop" &&
-  index === teams.length - 1 &&
-  teams.length % 2 !== 0
-    ? "540px"
-    : "100%",
-    justifySelf:
-  viewMode === "desktop" &&
-  index === teams.length - 1 &&
-  teams.length % 2 !== 0
-    ? "center"
-    : "stretch",
-            backgroundImage: `url(${images[index % images.length]})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-
-            borderRadius: "28px",
-
-            padding:
-  viewMode === "mobile"
-    ? "48px 18px 18px 18px"
-    : "34px 12px 12px 12px",
-
-            marginBottom: "24px",
+            background:
+              viewMode === "mobile"
+                ? "#2563eb"
+                : "rgba(255,255,255,0.12)",
 
             color: "white",
 
-            boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+            width: "54px",
+            height: "54px",
 
-            position: "relative",
+            borderRadius: "18px",
+
+            fontSize: "22px",
+
+            cursor: "pointer",
+
+            backdropFilter: "blur(12px)",
+
+            boxShadow:
+              "0 6px 20px rgba(0,0,0,0.25)",
+          }}
+        >
+          📱
+        </button>
+
+        {/* DESKTOP */}
+        <button
+          onClick={() => setViewMode("desktop")}
+          style={{
+            border: "none",
+
+            background:
+              viewMode === "desktop"
+                ? "#2563eb"
+                : "rgba(255,255,255,0.12)",
+
+            color: "white",
+
+            width: "54px",
+            height: "54px",
+
+            borderRadius: "18px",
+
+            fontSize: "22px",
+
+            cursor: "pointer",
+
+            backdropFilter: "blur(12px)",
+
+            boxShadow:
+              "0 6px 20px rgba(0,0,0,0.25)",
+          }}
+        >
+          💻
+        </button>
+
+      </div>
+
+      {/* TEAM CARDS */}
+      {filteredTeams.map((team, index) => (
+
+        <div
+          key={team.id}
+          style={{
+
+            width: "100%",
+
+            gridColumn:
+              !isMobile &&
+              index === filteredTeams.length - 1 &&
+              filteredTeams.length % 2 !== 0
+                ? "1 / span 2"
+                : "auto",
+
+            maxWidth:
+              !isMobile &&
+              index === filteredTeams.length - 1 &&
+              filteredTeams.length % 2 !== 0
+                ? "620px"
+                : "100%",
+
+            justifySelf:
+              !isMobile &&
+              index === filteredTeams.length - 1 &&
+              filteredTeams.length % 2 !== 0
+                ? "center"
+                : "stretch",
+
+            backgroundImage:
+              `url(${images[index]})`,
+
+            backgroundSize: "cover",
+
+            backgroundPosition: "center",
+
+            backgroundRepeat: "no-repeat",
+
+            borderRadius: "34px",
 
             overflow: "hidden",
 
-minHeight: "140px",
-aspectRatio:
-  viewMode === "mobile"
-    ? "16 / 5"
-    : "16 / 5",
+            position: "relative",
 
-            display: "flex",
+            minHeight:
+              isMobile
+                ? "210px"
+                : "260px",
 
-            flexDirection: "column",
+            aspectRatio:
+              isMobile
+                ? "16 / 8"
+                : "16 / 6",
 
-            justifyContent: "space-between",
+            boxShadow:
+              "0 14px 38px rgba(0,0,0,0.14)",
+
+            transition: "0.25s ease",
           }}
         >
 
@@ -290,84 +237,53 @@ aspectRatio:
           <div
             style={{
               position: "absolute",
+
               inset: 0,
 
-              background: "rgba(0,0,0,0.18)",
+              background:
+                "linear-gradient(to bottom, rgba(0,0,0,0.04), rgba(0,0,0,0.18))",
             }}
           />
 
-          {/* SCORE */}
-{viewMode === "desktop" ? (
+          {/* SCORE ONLY */}
+          <div
+            style={{
+              position: "absolute",
 
-  /* DESKTOP — KEEP EXACT SAME */
-  <div
-    style={{
-      position: "absolute",
+              right:
+                isMobile
+                  ? "12%"
+                  : "14%",
 
-      right: "21%",
+              top: "50%",
 
-      bottom: "8%",
+              transform: "translateY(-50%)",
 
-      fontSize: "58px",
+              zIndex: 5,
 
-      fontWeight: "bold",
+              fontSize:
+                isMobile
+                  ? "74px"
+                  : "96px",
 
-      lineHeight: 1,
+              fontWeight: "900",
 
-      color: "white",
+              color: "white",
 
-      zIndex: 2,
+              lineHeight: 1,
 
-      textShadow:
-        "0 4px 12px rgba(0,0,0,0.28)",
-    }}
-  >
-    {team.score}
-  </div>
+              textShadow:
+                "0 6px 18px rgba(0,0,0,0.38)",
+            }}
+          >
+            {team.score}
+          </div>
 
-) : (
-
-  /* MOBILE — FIXED ALIGNMENT */
-<div
-  style={{
-    position: "absolute",
-
-    left: "68%",
-
-    transform: "translateX(-50%)",
-
-    bottom: "10%",
-
-    width: "50%",
-
-    textAlign: "center",
-
-    fontSize: "58px",
-
-    fontWeight: "bold",
-
-    lineHeight: 1,
-
-    color: "white",
-
-    zIndex: 2,
-
-    textShadow:
-      "0 4px 12px rgba(0,0,0,0.35)",
-  }}
->
-  {team.score}
-</div>
-
-)}
         </div>
+
       ))}
+
     </div>
+
   );
 }
-//test
-//test2
-//test3
-//test4
-//test5
-//test6
