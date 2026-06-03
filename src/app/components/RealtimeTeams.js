@@ -201,7 +201,11 @@ export default function RealtimeTeams({ initialTeams }) {
 
             overflow: "hidden",
 
-minHeight: "165px",
+minHeight: "140px",
+aspectRatio:
+  viewMode === "mobile"
+    ? "16 / 5"
+    : "16 / 5",
 
             display: "flex",
 
@@ -253,36 +257,36 @@ minHeight: "165px",
 ) : (
 
   /* MOBILE — FIXED ALIGNMENT */
-  <div
-    style={{
-      position: "absolute",
+<div
+  style={{
+    position: "absolute",
 
-      left: "70%",
+    left: "68%",
 
-      transform: "translateX(-50%)",
+    transform: "translateX(-50%)",
 
-      bottom: "19%",
+    bottom: "10%",
 
-      width: "85%",
+    width: "50%",
 
-      textAlign: "center",
+    textAlign: "center",
 
-      fontSize: "90px",
+    fontSize: "58px",
 
-      fontWeight: "bold",
+    fontWeight: "bold",
 
-      lineHeight: 1,
+    lineHeight: 1,
 
-      color: "white",
+    color: "white",
 
-      zIndex: 2,
+    zIndex: 2,
 
-      textShadow:
-        "0 4px 12px rgba(0,0,0,0.35)",
-    }}
-  >
-    {team.score}
-  </div>
+    textShadow:
+      "0 4px 12px rgba(0,0,0,0.35)",
+  }}
+>
+  {team.score}
+</div>
 
 )}
         </div>
