@@ -52,10 +52,14 @@ export default function RealtimeTeams({ initialTeams }) {
         display: "grid",
         justifyItems: "center",
 
-   gridTemplateColumns:
+width: "100%",
+maxWidth:
   viewMode === "mobile"
-    ? "1fr"
-    : "1fr 1fr",
+    ? "540px"
+    : index === teams.length - 1 &&
+      teams.length % 2 !== 0
+    ? "540px"
+    : "100%",
 
 width: "100%",
 maxWidth:
@@ -204,10 +208,7 @@ maxWidth:
 
             overflow: "hidden",
 
-minHeight:
-  viewMode === "mobile"
-    ? "260px"
-    : "165px",
+minHeight: "165px",
 
             display: "flex",
 
