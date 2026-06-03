@@ -1,4 +1,3 @@
-const XLSX = require("xlsx");
 
 const fs = require("fs");
 
@@ -27,24 +26,44 @@ const counts = {
 
 files.forEach((file) => {
 
-  if (!file.endsWith(".xlsx")) return;
+  if (!file.endsWith(".csv")) return;
 
-  const workbook = XLSX.readFile(
-    path.join(folderPath, file)
-  );
+  const filePath = path.join(folderPath, file);
 
-  const sheetName = workbook.SheetNames[0];
+const csv = fs.readFileSync(filePath, "utf8");
 
-  const sheet = workbook.Sheets[sheetName];
+const lines = csv.split("\n");
 
-  const data = XLSX.utils.sheet_to_json(sheet);
+const headers = lines[0]
+  .split(",")
+  .map(h => h.trim());
+
+const data = lines.slice(1).map(line => {
+
+  const values = line.split(",");
+
+  const row = {};
+
+  headers.forEach((header, i) => {
+    row[header] = values[i]?.trim();
+  });
+
+  return row;
+
+});
 
   data.forEach((row) => {
 
-    const vote =
-      row["พรรคผู้สมัครรับเลือกตั้งเป็นประธานนักเรียน"];
+   console.log(Object.keys(row));
 
-  console.log(vote);
+const vote =
+  row[Object.keys(row).find(key =>
+    key.includes("ประธานนักเรียน")
+  )];
+
+if (!vote) return;
+
+console.log(vote);
 
 if (counts[vote] !== undefined) {
   counts[vote]++;
@@ -73,3 +92,4 @@ async function updateVotes() {
 
 }
 
+updateVotes()
