@@ -80,74 +80,145 @@ export default function RealtimeTeams({ initialTeams }) {
 }}
     >
 
-      {/* VIEW SWITCHER */}
-      <div
-        style={{
-          position: "fixed",
-          top: "20px",
-          left: "20px",
+  {/* TOP NAVBAR */}
+<div
+  style={{
+    position: "sticky",
 
-          zIndex: 9999,
+    top: 0,
 
-          display: "flex",
-          gap: "10px",
+    zIndex: 9999,
 
-          background: "rgba(10,10,20,0.75)",
+    width: "100%",
 
-          padding: "10px",
-          borderRadius: "18px",
+    display: "flex",
 
-          backdropFilter: "blur(14px)",
+    justifyContent: "space-between",
 
-          border: "1px solid rgba(255,255,255,0.1)",
-        }}
-      >
-        <button
-          onClick={() => setViewMode("mobile")}
-          style={{
-            border: "none",
-            padding: "12px 16px",
+    alignItems: "center",
 
-            borderRadius: "14px",
+    padding: "16px 20px",
 
-            cursor: "pointer",
+    background: "rgba(10,10,20,0.82)",
 
-            fontSize: "18px",
+    backdropFilter: "blur(16px)",
 
-            background:
-              viewMode === "mobile"
-                ? "#3b82f6"
-                : "rgba(255,255,255,0.08)",
+    borderBottom:
+      "1px solid rgba(255,255,255,0.08)",
 
-            color: "white",
-          }}
-        >
-          📱
-        </button>
+    borderRadius:
+      viewMode === "mobile"
+        ? "0 0 24px 24px"
+        : "0 0 28px 28px",
 
-        <button
-          onClick={() => setViewMode("desktop")}
-          style={{
-            border: "none",
-            padding: "12px 16px",
+    marginBottom: "30px",
+  }}
+>
+  
+  {/* LEFT SIDE */}
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "12px",
+    }}
+  >
 
-            borderRadius: "14px",
+    {/* HAMBURGER */}
+    <button
+      style={{
+        border: "none",
 
-            cursor: "pointer",
+        background:
+          "rgba(255,255,255,0.08)",
 
-            fontSize: "18px",
+        color: "white",
 
-            background:
-              viewMode === "desktop"
-                ? "#3b82f6"
-                : "rgba(255,255,255,0.08)",
+        width: "46px",
+        height: "46px",
 
-            color: "white",
-          }}
-        >
-          💻
-        </button>
-      </div>
+        borderRadius: "14px",
+
+        fontSize: "22px",
+
+        cursor: "pointer",
+      }}
+    >
+      ☰
+    </button>
+
+    {/* CURRENT TAB */}
+    <div
+      style={{
+        color: "white",
+
+        fontWeight: "600",
+
+        fontSize:
+          viewMode === "mobile"
+            ? "16px"
+            : "18px",
+      }}
+    >
+      President Election
+    </div>
+
+  </div>
+
+  {/* RIGHT SIDE */}
+  <div
+    style={{
+      display: "flex",
+      gap: "10px",
+    }}
+  >
+    <button
+      onClick={() => setViewMode("mobile")}
+      style={{
+        border: "none",
+
+        padding: "10px 14px",
+
+        borderRadius: "12px",
+
+        cursor: "pointer",
+
+        background:
+          viewMode === "mobile"
+            ? "#3b82f6"
+            : "rgba(255,255,255,0.08)",
+
+        color: "white",
+      }}
+    >
+      📱
+    </button>
+
+    <button
+      onClick={() => setViewMode("desktop")}
+      style={{
+        border: "none",
+
+        padding: "10px 14px",
+
+        borderRadius: "12px",
+
+        cursor: "pointer",
+
+        background:
+          viewMode === "desktop"
+            ? "#3b82f6"
+            : "rgba(255,255,255,0.08)",
+
+        color: "white",
+      }}
+    >
+      💻
+    </button>
+  </div>
+
+</div>
+
 
       {/* TEAM CARDS */}
       {teams.map((team, index) => (
