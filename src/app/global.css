@@ -1,0 +1,64 @@
+.live-banner {
+
+  position: sticky;
+  top: 0;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      90deg,
+      #050505,
+      #111827,
+      #050505
+    );
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.08);
+
+  z-index: 9999;
+
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+}
+
+.live-track {
+
+  display: flex;
+
+  width: max-content;
+
+  animation:
+    tickerMove 22s linear infinite;
+}
+
+.live-track span {
+
+  white-space: nowrap;
+
+  color: white;
+
+  font-weight: 700;
+
+  font-size: 15px;
+
+  letter-spacing: 0.5px;
+
+  padding-right: 120px;
+}
+
+@keyframes tickerMove {
+
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+
+}
