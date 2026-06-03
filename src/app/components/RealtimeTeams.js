@@ -49,36 +49,35 @@ export default function RealtimeTeams({ initialTeams }) {
   return (
     <div
       style={{
-        display: "grid",
-        justifyItems: "center",
+  display: "grid",
 
-width: "100%",
-maxWidth:
-  viewMode === "mobile"
-    ? "540px"
-    : index === teams.length - 1 &&
-      teams.length % 2 !== 0
-    ? "540px"
-    : "100%",
+  justifyItems: "center",
 
-width: "100%",
-maxWidth:
-  viewMode === "mobile"
-    ? "100%"
-    : "1200px",
+  gridTemplateColumns:
+    viewMode === "mobile"
+      ? "1fr"
+      : "1fr 1fr",
 
-padding:
-  viewMode === "mobile"
-    ? "0 16px"
-    : "0",
+  width: "100%",
+
+  maxWidth:
+    viewMode === "mobile"
+      ? "100%"
+      : "1200px",
+
+  padding:
+    viewMode === "mobile"
+      ? "0 16px"
+      : "0",
 
   columnGap: "54px",
 
-rowGap: "28px",
-marginTop: "-20px",
+  rowGap: "28px",
 
-        position: "relative",
-      }}
+  marginTop: "-20px",
+
+  position: "relative",
+}}
     >
 
       {/* VIEW SWITCHER */}
@@ -161,13 +160,7 @@ marginTop: "-20px",
     ? "100%"
     : "100%",
 
-maxWidth:
-  viewMode === "mobile"
-    ? "100%"
-    : index === teams.length - 1 &&
-      teams.length % 2 !== 0
-    ? "540px"
-    : "100%",
+
     gridColumn:
   viewMode === "desktop" &&
   index === teams.length - 1 &&
