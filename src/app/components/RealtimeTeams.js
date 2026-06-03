@@ -5,21 +5,33 @@ import { supabase } from "../../lib/supabase";
 
 export default function RealtimeTeams({ initialTeams }) {
 
+  /* =========================================================
+     STATE
+  ========================================================= */
+
   const [teams, setTeams] = useState(initialTeams);
 
   const [viewMode, setViewMode] = useState("desktop");
 
   const isMobile = viewMode === "mobile";
 
-  /* FIXED TEAM ORDER */
+  /* =========================================================
+     FILTERED TEAMS
+  ========================================================= */
+
   const filteredTeams = teams
+
     .filter(
       (team) =>
         team.name !== "ไม่ประสงค์ลงคะแนน"
     )
+
     .sort((a, b) => a.id - b.id);
 
-  /* FIXED IMAGE ORDER */
+  /* =========================================================
+     IMAGES
+  ========================================================= */
+
   const images = [
     "/p1.JPG",
     "/p2.JPG",
@@ -28,10 +40,16 @@ export default function RealtimeTeams({ initialTeams }) {
     "/p5.JPG",
   ];
 
+  /* =========================================================
+     REALTIME
+  ========================================================= */
+
   useEffect(() => {
 
     const channel = supabase
+
       .channel("realtime teams")
+
       .on(
         "postgres_changes",
         {
@@ -39,6 +57,7 @@ export default function RealtimeTeams({ initialTeams }) {
           schema: "public",
           table: "team",
         },
+
         async () => {
 
           const { data } = await supabase
@@ -48,6 +67,7 @@ export default function RealtimeTeams({ initialTeams }) {
           setTeams(data || []);
         }
       )
+
       .subscribe();
 
     return () => {
@@ -56,247 +76,366 @@ export default function RealtimeTeams({ initialTeams }) {
 
   }, []);
 
+  /* =========================================================
+     UI
+  ========================================================= */
+
   return (
 
     <div
       style={{
-        display: "grid",
-
-        justifyItems: "center",
-
-        gridTemplateColumns:
-          isMobile
-            ? "1fr"
-            : "1fr 1fr",
 
         width: "100%",
 
-        maxWidth: "1450px",
+        display: "flex",
 
-        margin: "0 auto",
+        justifyContent: "center",
 
-        padding:
-          isMobile
-            ? "0 10px"
-            : "0 10px",
+        paddingTop: "34px",
 
-        columnGap: "22px",
-
-        rowGap: "22px",
-
-        marginTop: "18px",
-
-        position: "relative",
+        paddingBottom: "70px",
       }}
     >
 
-      {/* VIEW TOGGLE */}
+      {/* =====================================================
+          MAIN PANEL
+      ===================================================== */}
+
       <div
         style={{
-          position: "absolute",
 
-          top: "-112px",
+          width: "96%",
 
-          right: "24px",
+          maxWidth: "1500px",
 
-          display: "flex",
+          background: "#f8f8f9",
 
-          gap: "10px",
+          borderRadius: "38px",
 
-          zIndex: 100,
+          paddingTop: "40px",
+
+          paddingBottom: "40px",
+
+          paddingLeft:
+            isMobile
+              ? "18px"
+              : "28px",
+
+          paddingRight:
+            isMobile
+              ? "18px"
+              : "28px",
+
+          boxShadow:
+            "0 16px 50px rgba(0,0,0,0.10)",
+
+          position: "relative",
         }}
       >
 
-        {/* MOBILE */}
-        <button
-          onClick={() => setViewMode("mobile")}
-          style={{
-            border: "none",
-
-            background:
-              viewMode === "mobile"
-                ? "#2563eb"
-                : "rgba(255,255,255,0.10)",
-
-            color: "white",
-
-            width: "50px",
-            height: "50px",
-
-            borderRadius: "16px",
-
-            fontSize: "20px",
-
-            cursor: "pointer",
-
-            backdropFilter: "blur(12px)",
-
-            boxShadow:
-              "0 4px 16px rgba(0,0,0,0.22)",
-          }}
-        >
-          📱
-        </button>
-
-        {/* DESKTOP */}
-        <button
-          onClick={() => setViewMode("desktop")}
-          style={{
-            border: "none",
-
-            background:
-              viewMode === "desktop"
-                ? "#2563eb"
-                : "rgba(255,255,255,0.10)",
-
-            color: "white",
-
-            width: "50px",
-            height: "50px",
-
-            borderRadius: "16px",
-
-            fontSize: "20px",
-
-            cursor: "pointer",
-
-            backdropFilter: "blur(12px)",
-
-            boxShadow:
-              "0 4px 16px rgba(0,0,0,0.22)",
-          }}
-        >
-          💻
-        </button>
-
-      </div>
-
-      {/* TEAM CARDS */}
-      {filteredTeams.map((team, index) => (
+        {/* =====================================================
+            TOGGLE BAR
+        ===================================================== */}
 
         <div
-          key={team.id}
           style={{
 
-            width: "100%",
+            position: "absolute",
 
-            gridColumn:
-              !isMobile &&
-              index === filteredTeams.length - 1 &&
-              filteredTeams.length % 2 !== 0
-                ? "1 / span 2"
-                : "auto",
+            top: "-92px",
 
-            maxWidth:
-              !isMobile &&
-              index === filteredTeams.length - 1 &&
-              filteredTeams.length % 2 !== 0
-                ? "620px"
-                : "100%",
+            right: "24px",
 
-            justifySelf:
-              !isMobile &&
-              index === filteredTeams.length - 1 &&
-              filteredTeams.length % 2 !== 0
-                ? "center"
-                : "stretch",
+            display: "flex",
 
-            backgroundImage:
-              `url(${images[index]})`,
+            alignItems: "center",
 
-            backgroundSize: "cover",
+            background:
+              "rgba(255,255,255,0.08)",
 
-            backgroundPosition: "center",
+            backdropFilter: "blur(14px)",
 
-            backgroundRepeat: "no-repeat",
+            border:
+              "1px solid rgba(255,255,255,0.08)",
 
-            borderRadius: "34px",
+            borderRadius: "24px",
 
             overflow: "hidden",
 
-            position: "relative",
-
-            minHeight:
-              isMobile
-                ? "210px"
-                : "260px",
-
-            aspectRatio:
-              isMobile
-                ? "16 / 8"
-                : "16 / 6",
-
             boxShadow:
-              "0 10px 30px rgba(0,0,0,0.12)",
+              "0 10px 24px rgba(0,0,0,0.20)",
 
-            transition: "0.25s ease",
+            zIndex: 999,
           }}
         >
 
-          {/* DARK OVERLAY */}
-          <div
-            style={{
-              position: "absolute",
+          {/* DESKTOP BUTTON */}
 
-              inset: 0,
+          <button
+            onClick={() => setViewMode("desktop")}
+            style={{
+
+              border: "none",
 
               background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.03), rgba(0,0,0,0.16))",
-            }}
-          />
-
-          {/* SCORE */}
-          <div
-            style={{
-              position: "absolute",
-
-              right:
-                isMobile
-                  ? "8%"
-                  : "9%",
-
-              top: "54%",
-
-              transform: "translateY(-50%)",
-
-              width:
-                isMobile
-                  ? "90px"
-                  : "110px",
-
-              display: "flex",
-
-              justifyContent: "center",
-
-              alignItems: "center",
-
-              zIndex: 5,
-
-              fontSize:
-                isMobile
-                  ? "68px"
-                  : "82px",
-
-              fontWeight: "900",
+                viewMode === "desktop"
+                  ? "#2563eb"
+                  : "transparent",
 
               color: "white",
 
-              lineHeight: 1,
+              width: "95px",
 
-              letterSpacing: "-4px",
+              height: "78px",
 
-              textAlign: "center",
+              cursor: "pointer",
 
-              textShadow:
-                "0 5px 16px rgba(0,0,0,0.32)",
+              display: "flex",
+
+              flexDirection: "column",
+
+              alignItems: "center",
+
+              justifyContent: "center",
+
+              gap: "6px",
+
+              transition: "0.2s ease",
             }}
           >
-            {team.score}
-          </div>
+
+            <div
+              style={{
+                fontSize: "28px",
+              }}
+            >
+              💻
+            </div>
+
+            <div
+              style={{
+                fontSize: "14px",
+                fontWeight: "700",
+              }}
+            >
+              Desktop
+            </div>
+
+          </button>
+
+          {/* MOBILE BUTTON */}
+
+          <button
+            onClick={() => setViewMode("mobile")}
+            style={{
+
+              border: "none",
+
+              background:
+                viewMode === "mobile"
+                  ? "#2563eb"
+                  : "transparent",
+
+              color: "white",
+
+              width: "95px",
+
+              height: "78px",
+
+              cursor: "pointer",
+
+              display: "flex",
+
+              flexDirection: "column",
+
+              alignItems: "center",
+
+              justifyContent: "center",
+
+              gap: "6px",
+
+              transition: "0.2s ease",
+            }}
+          >
+
+            <div
+              style={{
+                fontSize: "28px",
+              }}
+            >
+              📱
+            </div>
+
+            <div
+              style={{
+                fontSize: "14px",
+                fontWeight: "700",
+              }}
+            >
+              Mobile
+            </div>
+
+          </button>
 
         </div>
 
-      ))}
+        {/* =====================================================
+            GRID
+        ===================================================== */}
+
+        <div
+          style={{
+
+            display: "grid",
+
+            gridTemplateColumns:
+              isMobile
+                ? "1fr"
+                : "1fr 1fr",
+
+            columnGap:
+              isMobile
+                ? "18px"
+                : "30px",
+
+            rowGap:
+              isMobile
+                ? "22px"
+                : "30px",
+
+            alignItems: "center",
+          }}
+        >
+
+          {/* =================================================
+              TEAM CARDS
+          ================================================= */}
+
+          {filteredTeams.map((team, index) => (
+
+            <div
+              key={team.id}
+
+              style={{
+
+                width: "100%",
+
+                gridColumn:
+                  !isMobile &&
+                  index === filteredTeams.length - 1 &&
+                  filteredTeams.length % 2 !== 0
+                    ? "1 / span 2"
+                    : "auto",
+
+                maxWidth:
+                  !isMobile &&
+                  index === filteredTeams.length - 1 &&
+                  filteredTeams.length % 2 !== 0
+                    ? "760px"
+                    : "100%",
+
+                justifySelf:
+                  !isMobile &&
+                  index === filteredTeams.length - 1 &&
+                  filteredTeams.length % 2 !== 0
+                    ? "center"
+                    : "stretch",
+
+                backgroundImage:
+                  `url(${images[index]})`,
+
+                backgroundSize: "cover",
+
+                backgroundPosition: "center",
+
+                backgroundRepeat: "no-repeat",
+
+                borderRadius: "30px",
+
+                overflow: "hidden",
+
+                position: "relative",
+
+                minHeight:
+                  isMobile
+                    ? "220px"
+                    : "250px",
+
+                aspectRatio:
+                  isMobile
+                    ? "16 / 7"
+                    : "16 / 5",
+
+                boxShadow:
+                  "0 12px 34px rgba(0,0,0,0.12)",
+
+                transition: "0.22s ease",
+              }}
+            >
+
+              {/* =============================================
+                  OVERLAY
+              ============================================= */}
+
+              <div
+                style={{
+
+                  position: "absolute",
+
+                  inset: 0,
+
+                  background:
+                    "linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.12))",
+                }}
+              />
+
+              {/* =============================================
+                  SCORE
+              ============================================= */}
+
+              <div
+                style={{
+
+                  position: "absolute",
+
+                  right:
+                    isMobile
+                      ? "9%"
+                      : "8%",
+
+                  top: "50%",
+
+                  transform: "translateY(-50%)",
+
+                  zIndex: 20,
+
+                  fontSize:
+                    isMobile
+                      ? "92px"
+                      : "112px",
+
+                  fontWeight: "900",
+
+                  color: "white",
+
+                  lineHeight: 1,
+
+                  textShadow:
+                    "0 10px 24px rgba(0,0,0,0.34)",
+                }}
+              >
+
+                {team.score}
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
 
     </div>
 

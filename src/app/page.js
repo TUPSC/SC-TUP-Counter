@@ -1,13 +1,12 @@
 import { supabase } from "../lib/supabase";
-import Countdown from "./components/Countdown.js";
+import Countdown from "./components/Countdown";
 import RealtimeTeams from "./components/RealtimeTeams";
 
 export default async function Home() {
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("team")
-    .select("*")
-    .order("score", { ascending: false });
+    .select("*");
 
   const teams = data || [];
 
@@ -16,136 +15,152 @@ export default async function Home() {
     <main
       style={{
         minHeight: "100vh",
-
+        background: "#eef0f3",
         overflowX: "hidden",
-
-        background: "#f4f5f7",
-
         fontFamily: "Arial, sans-serif",
       }}
     >
 
-      {/* TOP HEADER */}
+      {/* HEADER */}
       <div
         style={{
-          width: "100vw",
-
-          height: "105px",
-
+          width: "100%",
           background:
-            "linear-gradient(90deg,#020817,#08152f,#020817)",
+            "linear-gradient(90deg,#020817,#071633,#020817)",
 
-          borderBottom:
-            "1px solid rgba(255,255,255,0.08)",
+          padding: "16px 28px",
 
-          boxShadow:
-            "0 10px 30px rgba(0,0,0,0.18)",
+          boxSizing: "border-box",
+
+          display: "grid",
+
+          gridTemplateColumns: "1fr auto 1fr",
+
+          alignItems: "center",
 
           position: "sticky",
 
           top: 0,
 
           zIndex: 9999,
+
+          boxShadow:
+            "0 10px 30px rgba(0,0,0,0.18)",
         }}
       >
 
+        {/* LEFT */}
         <div
           style={{
-            width: "100%",
-
-            height: "100%",
-
             display: "flex",
-
             alignItems: "center",
-
-            justifyContent: "space-between",
-
-            padding: "0 24px",
+            gap: "18px",
           }}
         >
 
-          {/* LEFT */}
-          <div
+          <img
+            src="/logo.png"
+            alt="logo"
             style={{
-              display: "flex",
-
-              alignItems: "center",
-
-              gap: "18px",
+              width: "76px",
             }}
-          >
+          />
 
-            <img
-              src="/logo.png"
-              alt="logo"
+          <div>
+
+            <h1
               style={{
-                width: "72px",
-
-                objectFit: "contain",
+                color: "white",
+                margin: 0,
+                fontSize: "48px",
+                fontWeight: "900",
+                lineHeight: 1,
               }}
-            />
+            >
+              TUP Election 2026
+            </h1>
 
-            <div>
-
-              <h1
-                style={{
-                  color: "white",
-
-                  fontSize: "42px",
-
-                  fontWeight: "800",
-
-                  margin: 0,
-
-                  lineHeight: 1,
-                }}
-              >
-                TUP Election 2026
-              </h1>
-
-              <p
-                style={{
-                  color: "#8ea4ff",
-
-                  marginTop: "6px",
-
-                  fontSize: "13px",
-
-                  letterSpacing: "1.2px",
-                }}
-              >
-                LIVE STUDENT COUNCIL VOTE COUNT
-              </p>
-
-            </div>
+            <p
+              style={{
+                marginTop: "8px",
+                color: "#8ea4ff",
+                fontSize: "14px",
+                letterSpacing: "1.5px",
+              }}
+            >
+              LIVE STUDENT COUNCIL VOTE COUNT
+            </p>
 
           </div>
 
-          {/* RIGHT */}
+        </div>
+
+        {/* CENTER CLOCK */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+
+          <div
+            style={{
+              transform: "scale(0.82)",
+            }}
+          >
+            <Countdown />
+          </div>
+
+        </div>
+
+        {/* RIGHT TOGGLE */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            paddingRight: "24px",
+          }}
+        >
+
           <div
             style={{
               display: "flex",
-
-              alignItems: "center",
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "22px",
+              overflow: "hidden",
+              backdropFilter: "blur(12px)",
             }}
           >
 
-            {/* COUNTDOWN */}
-            <div
+            <button
               style={{
-                transform: "scale(0.78)",
-
-                transformOrigin: "right center",
-
-                marginRight: "22px",
-
-                filter:
-                  "drop-shadow(0 4px 12px rgba(0,0,0,0.25))",
+                border: "none",
+                background: "#2563eb",
+                color: "white",
+                padding: "16px 20px",
+                cursor: "pointer",
+                fontSize: "16px",
+                fontWeight: "700",
               }}
             >
-              <Countdown />
-            </div>
+              💻
+            </button>
+
+            <button
+              style={{
+                border: "none",
+                background: "transparent",
+                color: "white",
+                padding: "16px 20px",
+                cursor: "pointer",
+                fontSize: "16px",
+                fontWeight: "700",
+              }}
+            >
+              📱
+            </button>
 
           </div>
 
@@ -157,210 +172,11 @@ export default async function Home() {
       <div
         style={{
           width: "100%",
-
-          maxWidth: "100vw",
-
-          margin: "0 auto",
-
-          padding: "14px 18px 0 18px",
+          padding: "12px 0 50px 0",
         }}
       >
 
-        {/* REALTIME LEADERBOARD */}
         <RealtimeTeams initialTeams={teams} />
-
-        {/* ERROR */}
-        {error && (
-          <pre
-            style={{
-              color: "red",
-
-              textAlign: "center",
-
-              whiteSpace: "pre-wrap",
-
-              fontSize: "14px",
-
-              marginTop: "40px",
-            }}
-          >
-            {JSON.stringify(error, null, 2)}
-          </pre>
-        )}
-
-      </div>
-
-      {/* FOOTER */}
-      <div
-        style={{
-          maxWidth: "900px",
-
-          margin: "90px auto 0 auto",
-
-          position: "relative",
-
-          overflow: "hidden",
-
-          borderRadius: "28px",
-
-          boxShadow:
-            "0 10px 40px rgba(0,0,0,0.15)",
-        }}
-      >
-
-        {/* BG IMAGE */}
-        <img
-          src="/tup-aura (1).png"
-          alt="footer background"
-          style={{
-            width: "100%",
-
-            height: "220px",
-
-            objectFit: "cover",
-
-            display: "block",
-          }}
-        />
-
-        {/* DARK OVERLAY */}
-        <div
-          style={{
-            position: "absolute",
-
-            inset: 0,
-
-            background:
-              "linear-gradient(to right, rgba(0,0,0,0.35), rgba(0,0,0,0.15))",
-          }}
-        />
-
-        {/* CONTENT */}
-        <div
-          style={{
-            position: "absolute",
-
-            inset: 0,
-
-            display: "flex",
-
-            justifyContent: "space-between",
-
-            alignItems: "center",
-
-            padding: "0 42px",
-
-            flexWrap: "wrap",
-
-            gap: "20px",
-          }}
-        >
-
-          {/* LEFT */}
-          <img
-            src="/footer_logo.png"
-            alt="footer logo"
-            style={{
-              width: "150px",
-            }}
-          />
-
-          {/* RIGHT */}
-          <div
-            style={{
-              display: "flex",
-
-              flexDirection: "column",
-
-              alignItems: "flex-end",
-
-              gap: "16px",
-            }}
-          >
-
-            {/* SOCIALS */}
-            <div
-              style={{
-                display: "flex",
-
-                gap: "16px",
-              }}
-            >
-
-              <img
-                src="/ig.png"
-                alt="instagram"
-                style={{
-                  width: "34px",
-
-                  height: "34px",
-
-                  cursor: "pointer",
-                }}
-              />
-
-              <img
-                src="/fb.png"
-                alt="facebook"
-                style={{
-                  width: "34px",
-
-                  height: "34px",
-
-                  cursor: "pointer",
-                }}
-              />
-
-              <img
-                src="/web.png"
-                alt="website"
-                style={{
-                  width: "34px",
-
-                  height: "34px",
-
-                  cursor: "pointer",
-                }}
-              />
-
-            </div>
-
-            {/* CREDIT */}
-            <div
-              style={{
-                textAlign: "right",
-
-                color: "white",
-              }}
-            >
-
-              <p
-                style={{
-                  fontSize: "16px",
-
-                  fontWeight: "bold",
-
-                  marginBottom: "6px",
-                }}
-              >
-                TUPSC Election Dashboard 2026
-              </p>
-
-              <p
-                style={{
-                  fontSize: "12px",
-
-                  opacity: 0.9,
-                }}
-              >
-                Developed by นายธัชเชษฐ์ คงแขม ม.6/4
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
 
       </div>
 

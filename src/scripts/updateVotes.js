@@ -1,95 +1,296 @@
+ import { supabase } from "../lib/supabase";
+import Countdown from "./components/Countdown.js";
+import RealtimeTeams from "./components/RealtimeTeams";
 
-const fs = require("fs");
+export default async function Home() {
 
-const path = require("path");
+  const { data, error } = await supabase
+    .from("team")
+    .select("*")
+    .order("score", { ascending: false });
 
-const { createClient } = require("@supabase/supabase-js");
+  const teams = data || [];
 
-const supabase = createClient(
-  "https://wbdcbmrathhgwsvfdnpy.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZGNibXJhdGhoZ3dzdmZkbnB5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTg0NjQzNCwiZXhwIjoyMDk1NDIyNDM0fQ.39KbwTJMcexwJVTZfmuXKtq20sDy4e0hsJ-Q-c3vYj4"
-);
+  return (
 
-const folderPath =
-  "/Users/leoneena/Desktop/ElectionFiles";
+    <main
+      style={{
+        minHeight: "100vh",
 
-const files = fs.readdirSync(folderPath);
+        overflowX: "hidden",
 
-const counts = {
-  "พรรคพิง": 0,
-  "พรรคมาซบพี่": 0,
-  "พรรคพักใจ": 0,
-  "พรรคข้างกัน": 0,
-  "พรรค(พัก)ข้างเธอ": 0,
-  "ไม่ประสงค์ลงคะแนน": 0,
-};
+        background: "#f4f5f7",
 
-files.forEach((file) => {
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
 
-  if (!file.endsWith(".csv")) return;
+      {/* TOP HEADER */}
+      <div
+        style={{
+          width: "100vw",
 
-  const filePath = path.join(folderPath, file);
+          height: "92px",
 
-const csv = fs.readFileSync(filePath, "utf8");
+          background:
+            "linear-gradient(90deg,#020817,#08152f,#020817)",
 
-const lines = csv.split("\n");
+          borderBottom:
+            "1px solid rgba(255,255,255,0.08)",
 
-const headers = lines[0]
-  .split(",")
-  .map(h => h.trim());
+          boxShadow:
+            "0 8px 22px rgba(0,0,0,0.14)",
 
-const data = lines.slice(1).map(line => {
+          position: "sticky",
 
-  const values = line.split(",");
+          top: 0,
 
-  const row = {};
+          zIndex: 9999,
+        }}
+      >
 
-  headers.forEach((header, i) => {
-    row[header] = values[i]?.trim();
-  });
+        <div
+          style={{
+            width: "100%",
 
-  return row;
+            height: "100%",
 
-});
+            display: "flex",
 
-  data.forEach((row) => {
+            alignItems: "center",
 
-   console.log(Object.keys(row));
+            justifyContent: "space-between",
 
-const vote =
-  row[Object.keys(row).find(key =>
-    key.includes("ประธานนักเรียน")
-  )];
+            padding: "0 26px",
+          }}
+        >
 
-if (!vote) return;
+          {/* LEFT */}
+          <div
+            style={{
+              display: "flex",
 
-console.log(vote);
+              alignItems: "center",
 
-if (counts[vote] !== undefined) {
-  counts[vote]++;
+              gap: "14px",
+            }}
+          >
+
+            <img
+              src="/logo.png"
+              alt="logo"
+              style={{
+                width: "58px",
+
+                objectFit: "contain",
+              }}
+            />
+
+            <div>
+
+              <h1
+                style={{
+                  color: "white",
+
+                  fontSize: "32px",
+
+                  fontWeight: "800",
+
+                  margin: 0,
+
+                  lineHeight: 1,
+                }}
+              >
+                TUP Election 2026
+              </h1>
+
+              <p
+                style={{
+                  color: "#8ea4ff",
+
+                  marginTop: "4px",
+
+                  fontSize: "11px",
+
+                  letterSpacing: "1.2px",
+                }}
+              >
+                LIVE STUDENT COUNCIL VOTE COUNT
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* RIGHT */}
+          <div
+            style={{
+              display: "flex",
+
+              alignItems: "center",
+
+              marginRight: "80px",
+            }}
+          >
+
+            {/* CLOCK */}
+            <div
+              style={{
+                transform: "scale(0.66)",
+
+                transformOrigin: "right center",
+              }}
+            >
+              <Countdown />
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* CONTENT */}
+      <div
+        style={{
+          width: "100%",
+
+          maxWidth: "1480px",
+
+          margin: "0 auto",
+
+          padding: "8px 12px 0 12px",
+        }}
+      >
+
+        <RealtimeTeams initialTeams={teams} />
+
+        {error && (
+          <pre
+            style={{
+              color: "red",
+
+              textAlign: "center",
+
+              whiteSpace: "pre-wrap",
+
+              fontSize: "14px",
+
+              marginTop: "40px",
+            }}
+          >
+            {JSON.stringify(error, null, 2)}
+          </pre>
+        )}
+
+      </div>
+
+      {/* FOOTER */}
+      <div
+        style={{
+          maxWidth: "760px",
+
+          margin: "50px auto 0 auto",
+
+          position: "relative",
+
+          overflow: "hidden",
+
+          borderRadius: "24px",
+
+          boxShadow:
+            "0 10px 30px rgba(0,0,0,0.12)",
+        }}
+      >
+
+        <img
+          src="/tup-aura (1).png"
+          alt="footer background"
+          style={{
+            width: "100%",
+
+            height: "180px",
+
+            objectFit: "cover",
+
+            display: "block",
+          }}
+        />
+
+        {/* OVERLAY */}
+        <div
+          style={{
+            position: "absolute",
+
+            inset: 0,
+
+            background:
+              "linear-gradient(to right, rgba(0,0,0,0.30), rgba(0,0,0,0.10))",
+          }}
+        />
+
+        {/* CONTENT */}
+        <div
+          style={{
+            position: "absolute",
+
+            inset: 0,
+
+            display: "flex",
+
+            justifyContent: "space-between",
+
+            alignItems: "center",
+
+            padding: "0 34px",
+          }}
+        >
+
+          <img
+            src="/footer_logo.png"
+            alt="footer logo"
+            style={{
+              width: "120px",
+            }}
+          />
+
+          <div
+            style={{
+              textAlign: "right",
+
+              color: "white",
+            }}
+          >
+
+            <p
+              style={{
+                fontSize: "15px",
+
+                fontWeight: "bold",
+
+                marginBottom: "4px",
+              }}
+            >
+              TUPSC Election Dashboard 2026
+            </p>
+
+            <p
+              style={{
+                fontSize: "11px",
+
+                opacity: 0.9,
+              }}
+            >
+              Developed by นายธัชเชษฐ์ คงแขม ม.6/4
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  );
 }
-
-  });
-
-});
-
-async function updateVotes() {
-
-  for (const party in counts) {
-
-    await supabase
-      .from("team")
-      .update({
-        score: counts[party]
-      })
-      .eq("name", party);
-
-  }
-
-  console.log("🔥 ALL FILES MERGED");
-
-  console.log(counts);
-
-}
-
-updateVotes()
