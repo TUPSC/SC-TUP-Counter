@@ -16,143 +16,153 @@ export default async function Home() {
     <main
       style={{
         minHeight: "100vh",
+
         overflowX: "hidden",
+
         background: "#f4f5f7",
+
         fontFamily: "Arial, sans-serif",
       }}
     >
 
-   {/* TOP GOVERNMENT HEADER */}
-<div
-  style={{
-    width: "100vw",
-    height: "130px",
-
-    background:
-      "linear-gradient(90deg,#020817,#08152f,#020817)",
-
-    borderBottom:
-      "1px solid rgba(255,255,255,0.08)",
-
-    boxShadow:
-      "0 10px 30px rgba(0,0,0,0.18)",
-
-    position: "sticky",
-
-    top: 0,
-
-    zIndex: 9999,
-  }}
->
-
-  <div
-    style={{
-      width: "100%",
-
-      height: "100%",
-
-      display: "flex",
-
-      alignItems: "center",
-
-      justifyContent: "space-between",
-
-      padding: "0 42px",
-    }}
-  >
-
-    {/* LEFT */}
-    <div
-      style={{
-        display: "flex",
-
-        alignItems: "center",
-
-        gap: "22px",
-      }}
-    >
-
-      <img
-        src="/logo.png"
-        alt="logo"
-        style={{
-          width: "92px",
-          objectFit: "contain",
-        }}
-      />
-
-      <div>
-
-        <h1
-          style={{
-            color: "white",
-
-            fontSize: "56px",
-
-            fontWeight: "800",
-
-            margin: 0,
-
-            lineHeight: 1,
-          }}
-        >
-          TUP Election 2026
-        </h1>
-
-        <p
-          style={{
-            color: "#8ea4ff",
-
-            marginTop: "8px",
-
-            fontSize: "15px",
-
-            letterSpacing: "1.5px",
-          }}
-        >
-          LIVE STUDENT COUNCIL VOTE COUNT
-        </p>
-
-      </div>
-
-    </div>
-
-    {/* RIGHT */}
-    <div
-      style={{
-        display: "flex",
-
-        alignItems: "center",
-
-        gap: "22px",
-      }}
-    >
-
-      {/* COUNTDOWN */}
+      {/* TOP HEADER */}
       <div
         style={{
-          transform: "scale(0.9)",
-          transformOrigin: "right center",
+          width: "100vw",
 
-          filter:
-            "drop-shadow(0 4px 12px rgba(0,0,0,0.25))",
+          height: "105px",
+
+          background:
+            "linear-gradient(90deg,#020817,#08152f,#020817)",
+
+          borderBottom:
+            "1px solid rgba(255,255,255,0.08)",
+
+          boxShadow:
+            "0 10px 30px rgba(0,0,0,0.18)",
+
+          position: "sticky",
+
+          top: 0,
+
+          zIndex: 9999,
         }}
       >
-        <Countdown />
+
+        <div
+          style={{
+            width: "100%",
+
+            height: "100%",
+
+            display: "flex",
+
+            alignItems: "center",
+
+            justifyContent: "space-between",
+
+            padding: "0 24px",
+          }}
+        >
+
+          {/* LEFT */}
+          <div
+            style={{
+              display: "flex",
+
+              alignItems: "center",
+
+              gap: "18px",
+            }}
+          >
+
+            <img
+              src="/logo.png"
+              alt="logo"
+              style={{
+                width: "72px",
+
+                objectFit: "contain",
+              }}
+            />
+
+            <div>
+
+              <h1
+                style={{
+                  color: "white",
+
+                  fontSize: "42px",
+
+                  fontWeight: "800",
+
+                  margin: 0,
+
+                  lineHeight: 1,
+                }}
+              >
+                TUP Election 2026
+              </h1>
+
+              <p
+                style={{
+                  color: "#8ea4ff",
+
+                  marginTop: "6px",
+
+                  fontSize: "13px",
+
+                  letterSpacing: "1.2px",
+                }}
+              >
+                LIVE STUDENT COUNCIL VOTE COUNT
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* RIGHT */}
+          <div
+            style={{
+              display: "flex",
+
+              alignItems: "center",
+            }}
+          >
+
+            {/* COUNTDOWN */}
+            <div
+              style={{
+                transform: "scale(0.78)",
+
+                transformOrigin: "right center",
+
+                marginRight: "22px",
+
+                filter:
+                  "drop-shadow(0 4px 12px rgba(0,0,0,0.25))",
+              }}
+            >
+              <Countdown />
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
-
-    </div>
-
-  </div>
-
-</div>
 
       {/* CONTENT */}
       <div
         style={{
-          maxWidth: "1250px",
-          margin: "40px auto",
-          padding: "0 20px",
+          width: "100%",
+
+          maxWidth: "100vw",
+
+          margin: "0 auto",
+
+          padding: "14px 18px 0 18px",
         }}
       >
 
@@ -164,9 +174,13 @@ export default async function Home() {
           <pre
             style={{
               color: "red",
+
               textAlign: "center",
+
               whiteSpace: "pre-wrap",
+
               fontSize: "14px",
+
               marginTop: "40px",
             }}
           >
@@ -180,7 +194,8 @@ export default async function Home() {
       <div
         style={{
           maxWidth: "900px",
-          margin: "120px auto 0 auto",
+
+          margin: "90px auto 0 auto",
 
           position: "relative",
 
@@ -199,8 +214,11 @@ export default async function Home() {
           alt="footer background"
           style={{
             width: "100%",
-            height: "250px",
+
+            height: "220px",
+
             objectFit: "cover",
+
             display: "block",
           }}
         />
@@ -209,6 +227,7 @@ export default async function Home() {
         <div
           style={{
             position: "absolute",
+
             inset: 0,
 
             background:
@@ -220,15 +239,19 @@ export default async function Home() {
         <div
           style={{
             position: "absolute",
+
             inset: 0,
 
             display: "flex",
+
             justifyContent: "space-between",
+
             alignItems: "center",
 
-            padding: "0 50px",
+            padding: "0 42px",
 
             flexWrap: "wrap",
+
             gap: "20px",
           }}
         >
@@ -238,7 +261,7 @@ export default async function Home() {
             src="/footer_logo.png"
             alt="footer logo"
             style={{
-              width: "170px",
+              width: "150px",
             }}
           />
 
@@ -246,9 +269,12 @@ export default async function Home() {
           <div
             style={{
               display: "flex",
+
               flexDirection: "column",
+
               alignItems: "flex-end",
-              gap: "18px",
+
+              gap: "16px",
             }}
           >
 
@@ -256,7 +282,8 @@ export default async function Home() {
             <div
               style={{
                 display: "flex",
-                gap: "18px",
+
+                gap: "16px",
               }}
             >
 
@@ -264,8 +291,10 @@ export default async function Home() {
                 src="/ig.png"
                 alt="instagram"
                 style={{
-                  width: "38px",
-                  height: "38px",
+                  width: "34px",
+
+                  height: "34px",
+
                   cursor: "pointer",
                 }}
               />
@@ -274,8 +303,10 @@ export default async function Home() {
                 src="/fb.png"
                 alt="facebook"
                 style={{
-                  width: "38px",
-                  height: "38px",
+                  width: "34px",
+
+                  height: "34px",
+
                   cursor: "pointer",
                 }}
               />
@@ -284,8 +315,10 @@ export default async function Home() {
                 src="/web.png"
                 alt="website"
                 style={{
-                  width: "38px",
-                  height: "38px",
+                  width: "34px",
+
+                  height: "34px",
+
                   cursor: "pointer",
                 }}
               />
@@ -296,14 +329,17 @@ export default async function Home() {
             <div
               style={{
                 textAlign: "right",
+
                 color: "white",
               }}
             >
 
               <p
                 style={{
-                  fontSize: "18px",
+                  fontSize: "16px",
+
                   fontWeight: "bold",
+
                   marginBottom: "6px",
                 }}
               >
@@ -312,7 +348,8 @@ export default async function Home() {
 
               <p
                 style={{
-                  fontSize: "13px",
+                  fontSize: "12px",
+
                   opacity: 0.9,
                 }}
               >

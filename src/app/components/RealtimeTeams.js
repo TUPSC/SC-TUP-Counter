@@ -21,11 +21,11 @@ export default function RealtimeTeams({ initialTeams }) {
 
   /* FIXED IMAGE ORDER */
   const images = [
-    "/p1.JPG", // team id 1
-    "/p2.JPG", // team id 2
-    "/p3.JPG", // team id 3
-    "/p4.JPG", // team id 4
-    "/p5.JPG", // team id 5
+    "/p1.JPG",
+    "/p2.JPG",
+    "/p3.JPG",
+    "/p4.JPG",
+    "/p5.JPG",
   ];
 
   useEffect(() => {
@@ -71,20 +71,20 @@ export default function RealtimeTeams({ initialTeams }) {
 
         width: "100%",
 
-        maxWidth: "1320px",
+        maxWidth: "1450px",
 
         margin: "0 auto",
 
         padding:
           isMobile
-            ? "0 16px"
-            : "0 20px",
+            ? "0 10px"
+            : "0 10px",
 
-        columnGap: "56px",
+        columnGap: "22px",
 
-        rowGap: "42px",
+        rowGap: "22px",
 
-        marginTop: "40px",
+        marginTop: "18px",
 
         position: "relative",
       }}
@@ -95,13 +95,13 @@ export default function RealtimeTeams({ initialTeams }) {
         style={{
           position: "absolute",
 
-          top: "-145px",
+          top: "-112px",
 
           right: "24px",
 
           display: "flex",
 
-          gap: "12px",
+          gap: "10px",
 
           zIndex: 100,
         }}
@@ -116,23 +116,23 @@ export default function RealtimeTeams({ initialTeams }) {
             background:
               viewMode === "mobile"
                 ? "#2563eb"
-                : "rgba(255,255,255,0.12)",
+                : "rgba(255,255,255,0.10)",
 
             color: "white",
 
-            width: "54px",
-            height: "54px",
+            width: "50px",
+            height: "50px",
 
-            borderRadius: "18px",
+            borderRadius: "16px",
 
-            fontSize: "22px",
+            fontSize: "20px",
 
             cursor: "pointer",
 
             backdropFilter: "blur(12px)",
 
             boxShadow:
-              "0 6px 20px rgba(0,0,0,0.25)",
+              "0 4px 16px rgba(0,0,0,0.22)",
           }}
         >
           📱
@@ -147,23 +147,23 @@ export default function RealtimeTeams({ initialTeams }) {
             background:
               viewMode === "desktop"
                 ? "#2563eb"
-                : "rgba(255,255,255,0.12)",
+                : "rgba(255,255,255,0.10)",
 
             color: "white",
 
-            width: "54px",
-            height: "54px",
+            width: "50px",
+            height: "50px",
 
-            borderRadius: "18px",
+            borderRadius: "16px",
 
-            fontSize: "22px",
+            fontSize: "20px",
 
             cursor: "pointer",
 
             backdropFilter: "blur(12px)",
 
             boxShadow:
-              "0 6px 20px rgba(0,0,0,0.25)",
+              "0 4px 16px rgba(0,0,0,0.22)",
           }}
         >
           💻
@@ -227,7 +227,7 @@ export default function RealtimeTeams({ initialTeams }) {
                 : "16 / 6",
 
             boxShadow:
-              "0 14px 38px rgba(0,0,0,0.14)",
+              "0 10px 30px rgba(0,0,0,0.12)",
 
             transition: "0.25s ease",
           }}
@@ -241,30 +241,41 @@ export default function RealtimeTeams({ initialTeams }) {
               inset: 0,
 
               background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.04), rgba(0,0,0,0.18))",
+                "linear-gradient(to bottom, rgba(0,0,0,0.03), rgba(0,0,0,0.16))",
             }}
           />
 
-          {/* SCORE ONLY */}
+          {/* SCORE */}
           <div
             style={{
               position: "absolute",
 
               right:
                 isMobile
-                  ? "12%"
-                  : "14%",
+                  ? "8%"
+                  : "9%",
 
-              top: "50%",
+              top: "54%",
 
               transform: "translateY(-50%)",
+
+              width:
+                isMobile
+                  ? "90px"
+                  : "110px",
+
+              display: "flex",
+
+              justifyContent: "center",
+
+              alignItems: "center",
 
               zIndex: 5,
 
               fontSize:
                 isMobile
-                  ? "74px"
-                  : "96px",
+                  ? "68px"
+                  : "82px",
 
               fontWeight: "900",
 
@@ -272,8 +283,12 @@ export default function RealtimeTeams({ initialTeams }) {
 
               lineHeight: 1,
 
+              letterSpacing: "-4px",
+
+              textAlign: "center",
+
               textShadow:
-                "0 6px 18px rgba(0,0,0,0.38)",
+                "0 5px 16px rgba(0,0,0,0.32)",
             }}
           >
             {team.score}
