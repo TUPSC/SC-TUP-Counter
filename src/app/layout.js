@@ -1,8 +1,15 @@
 export const metadata = {
-  title: "TUPSC Dashboard",
+  title: "TUP Election 2026",
   description: "Realtime Election Dashboard",
-  viewport: "width=device-width, initial-scale=1",
 };
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -12,13 +19,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-export const metadata = {
-  title: "TUP Election 2026",
-};
-
-export const viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-};
