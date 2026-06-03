@@ -2,13 +2,26 @@ import { supabase } from "../lib/supabase";
 import Countdown from "./components/Countdown";
 import RealtimeTeams from "./components/RealtimeTeams";
 
+const { data, error } = await supabase
+  .from("team")
+  .select("*");
+
+console.log("DATA:", data);
+console.log("ERROR:", error);
+
 export default async function Home() {
 
   const { data } = await supabase
     .from("team")
     .select("*");
 
-  const teams = data || [];
+const teams = [
+  { id: 1, name: "พิง", score: 0 },
+  { id: 2, name: "มาชิบพี่", score: 0 },
+  { id: 3, name: "พักใจ", score: 0 },
+  { id: 4, name: "ข้างกัน", score: 0 },
+  { id: 5, name: "(พัก)ข้างเธอ", score: 0 },
+];
 
   return (
 
