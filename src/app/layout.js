@@ -12,3 +12,13 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+export const metadata = {
+  title: "TUP Election 2026",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
