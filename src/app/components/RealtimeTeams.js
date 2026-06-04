@@ -7,6 +7,9 @@ import { supabase } from "../../lib/supabase";
 export default function RealtimeTeams({ initialTeams = [] }) {
   const [teams, setTeams] = useState(initialTeams || []);
   const [now, setNow] = useState(new Date());
+  const [viewMode, setViewMode] = useState("desktop");
+
+  const isMobile = viewMode === "mobile";
 
   const images = ["/p1.JPG", "/p2.JPG", "/p3.JPG", "/p4.JPG", "/p5.JPG"];
 
@@ -73,23 +76,52 @@ export default function RealtimeTeams({ initialTeams = [] }) {
   targetTime.setHours(13, 0, 0, 0);
 
   const remainingMs = Math.max(targetTime.getTime() - now.getTime(), 0);
-  const hours = String(Math.floor(remainingMs / 1000 / 60 / 60)).padStart(2, "0");
-  const minutes = String(Math.floor((remainingMs / 1000 / 60) % 60)).padStart(2, "0");
-  const seconds = String(Math.floor((remainingMs / 1000) % 60)).padStart(2, "0");
+
+  const hours = String(
+    Math.floor(remainingMs / 1000 / 60 / 60)
+  ).padStart(2, "0");
+
+  const minutes = String(
+    Math.floor((remainingMs / 1000 / 60) % 60)
+  ).padStart(2, "0");
+
+  const seconds = String(
+    Math.floor((remainingMs / 1000) % 60)
+  ).padStart(2, "0");
 
   const visibleTeams = Array.from({ length: 5 }, (_, index) => {
-    return teams[index] || {
-      id: `empty-${index}`,
-      score: 0,
-    };
+    return (
+      teams[index] || {
+        id: `empty-${index}`,
+        score: 0,
+      }
+    );
   });
 
   return (
-    <main className="page">
+    <main className={`page ${isMobile ? "mobileMode" : "desktopMode"}`}>
       <div className="dashboard">
         <header className="header">
           <div className="timer">
             {hours}:{minutes}:{seconds}
+          </div>
+
+          <div className="toggleBar">
+            <button
+              type="button"
+              onClick={() => setViewMode("desktop")}
+              className={viewMode === "desktop" ? "active" : ""}
+            >
+              💻
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setViewMode("mobile")}
+              className={viewMode === "mobile" ? "active" : ""}
+            >
+              📱
+            </button>
           </div>
         </header>
 
@@ -101,7 +133,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
               style={{ backgroundImage: `url(${images[index]})` }}
             >
               <div className="overlay" />
-              <div className="score">{team.score ?? 0}</div>
+              <div className={`score score${index}`}>{team.score ?? 0}</div>
             </div>
           ))}
         </section>
@@ -111,8 +143,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
 
           <div className="footerText">
             <div className="footerTitle">TUPSC Election Dashboard 2026</div>
-            <div>Developed by ธัชเชษฐ์​ คงแขม ม.6/4</div>
-
+            <div>Developed by ธัชเชษฐ์ คงแขม ม.6/4</div>
           </div>
         </footer>
       </div>
@@ -123,18 +154,19 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           margin: 0;
           padding: 0;
           background: #f6f6f6;
-          overflow: hidden;
+          overflow-x: hidden;
+          overflow-y: auto;
         }
       `}</style>
 
       <style jsx>{`
         .page {
-          width: 100vw;
+          width: 100%;
           min-height: 100vh;
           background: #f6f6f6;
-          padding: 12px 20px;
+          padding: 12px 20px 28px;
           box-sizing: border-box;
-          overflow: hidden;
+          overflow: visible;
         }
 
         .dashboard {
@@ -149,18 +181,45 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           height: 44px;
           border-radius: 16px;
           background: white;
-          display: flex;
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
           align-items: center;
-          justify-content: center;
           box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+          padding: 0 10px;
+          box-sizing: border-box;
         }
 
         .timer {
+          grid-column: 2;
           color: #dc2626;
           font-size: 30px;
           font-weight: 900;
           line-height: 1;
           letter-spacing: 0;
+        }
+
+        .toggleBar {
+          grid-column: 3;
+          justify-self: end;
+          display: flex;
+          background: #eef2f7;
+          border-radius: 12px;
+          overflow: hidden;
+          padding: 3px;
+        }
+
+        .toggleBar button {
+          border: none;
+          background: transparent;
+          width: 38px;
+          height: 30px;
+          border-radius: 9px;
+          cursor: pointer;
+          font-size: 15px;
+        }
+
+        .toggleBar button.active {
+          background: #2563eb;
         }
 
         .grid {
@@ -196,35 +255,32 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           );
         }
 
-  .score {
-  position: absolute;
-  top: 75%;
-  left: 69%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  color: white;
-  font-size: clamp(52px, 4.7vw, 88px);
-  font-weight: 900;
-  line-height: 1;
-  text-align: center;
-  text-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
-}
+        .score {
+          position: absolute;
+          top: 75%;
+          left: 69%;
+          transform: translate(-50%, -50%);
+          z-index: 2;
+          color: white;
+          font-size: clamp(52px, 4.7vw, 88px);
+          font-weight: 900;
+          line-height: 1;
+          text-align: center;
+          text-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+        }
 
-/* red card */
-.score1 {
-  left: 75%;
-}
+        .score1 {
+          left: 75%;
+        }
 
-/* blue card */
-.score3 {
-  left: 76%;
-}
+        .score3 {
+          left: 76%;
+        }
 
-/* fifth centered card */
-.score4 {
-  left: 72%;
-  top: 67%;
-}
+        .score4 {
+          left: 72%;
+          top: 67%;
+        }
 
         .footer {
           height: 64px;
@@ -262,21 +318,37 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           margin-bottom: 2px;
         }
 
-        .footerSub {
-          font-size: 10px;
-          opacity: 0.75;
-          margin-top: 1px;
+        .mobileMode .dashboard {
+          width: min(430px, 100%);
+        }
+
+        .mobileMode .grid {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .mobileMode .card,
+        .mobileMode .lastCard {
+          width: 100%;
+          aspect-ratio: 16 / 7;
+        }
+
+        .mobileMode .timer {
+          font-size: 24px;
+        }
+
+        .mobileMode .score {
+          font-size: 76px;
+        }
+
+        .mobileMode .header {
+          height: 48px;
         }
 
         @media (max-width: 900px) {
-          html,
-          body {
-            overflow-y: auto;
-          }
-
           .page {
-            overflow: visible;
-            padding: 14px;
+            padding: 14px 14px 28px;
           }
 
           .dashboard {
@@ -296,7 +368,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           }
 
           .timer {
-            font-size: 26px;
+            font-size: 24px;
           }
 
           .score {
