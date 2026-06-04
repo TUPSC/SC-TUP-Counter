@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,7 +9,6 @@ export default function RealtimeTeams({ initialTeams = [] }) {
   const [viewMode, setViewMode] = useState("desktop");
 
   const isMobile = viewMode === "mobile";
-
   const images = ["/p1.JPG", "/p2.JPG", "/p3.JPG", "/p4.JPG", "/p5.JPG"];
 
   const fetchTeams = async () => {
@@ -28,10 +26,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
   };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setNow(new Date());
-    }, 1000);
-
+    const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -66,9 +61,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
     setupRealtime();
 
     return () => {
-      if (channel) {
-        supabase.removeChannel(channel);
-      }
+      if (channel) supabase.removeChannel(channel);
     };
   }, []);
 
@@ -76,26 +69,15 @@ export default function RealtimeTeams({ initialTeams = [] }) {
   targetTime.setHours(13, 0, 0, 0);
 
   const remainingMs = Math.max(targetTime.getTime() - now.getTime(), 0);
-
-  const hours = String(
-    Math.floor(remainingMs / 1000 / 60 / 60)
-  ).padStart(2, "0");
-
-  const minutes = String(
-    Math.floor((remainingMs / 1000 / 60) % 60)
-  ).padStart(2, "0");
-
-  const seconds = String(
-    Math.floor((remainingMs / 1000) % 60)
-  ).padStart(2, "0");
+  const hours = String(Math.floor(remainingMs / 1000 / 60 / 60)).padStart(2, "0");
+  const minutes = String(Math.floor((remainingMs / 1000 / 60) % 60)).padStart(2, "0");
+  const seconds = String(Math.floor((remainingMs / 1000) % 60)).padStart(2, "0");
 
   const visibleTeams = Array.from({ length: 5 }, (_, index) => {
-    return (
-      teams[index] || {
-        id: `empty-${index}`,
-        score: 0,
-      }
-    );
+    return teams[index] || {
+      id: `empty-${index}`,
+      score: 0,
+    };
   });
 
   return (
@@ -262,7 +244,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           transform: translate(-50%, -50%);
           z-index: 2;
           color: white;
-          font-size: clamp(52px, 4.7vw, 88px);
+          font-size: clamp(42px, 4vw, 74px);
           font-weight: 800;
           line-height: 1;
           text-align: center;
@@ -339,7 +321,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
         }
 
         .mobileMode .score {
-          font-size: 76px;
+          font-size: 62px;
         }
 
         .mobileMode .header {
@@ -372,7 +354,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           }
 
           .score {
-            font-size: 76px;
+            font-size: 62px;
           }
         }
       `}</style>

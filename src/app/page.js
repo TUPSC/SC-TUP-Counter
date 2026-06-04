@@ -1,5 +1,4 @@
 import { supabase } from "../lib/supabase";
-import Countdown from "./components/Countdown";
 import RealtimeTeams from "./components/RealtimeTeams";
 
 export default async function Home() {
@@ -19,16 +18,15 @@ export default async function Home() {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      {/* HEADER */}
       <div
         style={{
           width: "100%",
           background: "linear-gradient(90deg,#020817,#071633,#020817)",
-          padding: "16px 28px",
+          padding: "14px 28px",
           boxSizing: "border-box",
-          display: "grid",
-          gridTemplateColumns: "1fr auto 1fr",
+          display: "flex",
           alignItems: "center",
+          justifyContent: "space-between",
           position: "sticky",
           top: 0,
           zIndex: 9999,
@@ -39,7 +37,7 @@ export default async function Home() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "18px",
+            gap: "16px",
           }}
         >
           <img
@@ -50,49 +48,20 @@ export default async function Home() {
             }}
           />
 
-          <div>
-            <h1
-              style={{
-                color: "white",
-                margin: 0,
-                fontSize: "48px",
-                fontWeight: "900",
-                lineHeight: 1,
-              }}
-            >
-              TUP Election 2026
-            </h1>
-
-            <p
-              style={{
-                marginTop: "8px",
-                marginBottom: 0,
-                color: "#8ea4ff",
-                fontSize: "14px",
-                letterSpacing: "1.5px",
-              }}
-            >
-              LIVE STUDENT COUNCIL VOTE COUNT
-            </p>
-          </div>
+          <p
+            style={{
+              margin: 0,
+              color: "#8ea4ff",
+              fontSize: "15px",
+              fontWeight: "800",
+              letterSpacing: "1.5px",
+            }}
+          >
+            LIVE STUDENT COUNCIL VOTE COUNT
+          </p>
         </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ transform: "scale(0.82)" }}>
-            <Countdown />
-          </div>
-        </div>
-
-        <div />
       </div>
 
-      {/* CONTENT */}
       <div
         style={{
           width: "100%",
