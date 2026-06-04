@@ -3,31 +3,27 @@
 import { useEffect, useState } from "react";
 
 export default function Countdown() {
-
-const targetDate = new Date(Date.now() + 2 * 60 * 1000);
-
   const [timeLeft, setTimeLeft] = useState("00:00:00");
 
   useEffect(() => {
+    const targetDate = new Date();
+    targetDate.setHours(13, 0, 0, 0);
 
-    const interval = setInterval(() => {
-
+    const updateCountdown = () => {
       const now = new Date();
-
-      const difference = targetDate - now;
+      const difference = targetDate.getTime() - now.getTime();
 
       if (difference <= 0) {
         setTimeLeft("00:00:00");
-        clearInterval(interval);
         return;
       }
 
       const hours = String(
-        Math.floor((difference / (1000 * 60 * 60)) % 24)
+        Math.floor(difference / (1000 * 60 * 60))
       ).padStart(2, "0");
 
       const minutes = String(
-        Math.floor((difference / 1000 / 60) % 60)
+        Math.floor((difference / (1000 * 60)) % 60)
       ).padStart(2, "0");
 
       const seconds = String(
@@ -35,11 +31,13 @@ const targetDate = new Date(Date.now() + 2 * 60 * 1000);
       ).padStart(2, "0");
 
       setTimeLeft(`${hours}:${minutes}:${seconds}`);
+    };
 
-    }, 1000);
+    updateCountdown();
+
+    const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-
   }, []);
 
   return (
