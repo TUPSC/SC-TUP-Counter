@@ -111,8 +111,8 @@ export default function RealtimeTeams({ initialTeams = [] }) {
 
           <div className="footerText">
             <div className="footerTitle">TUPSC Election Dashboard 2026</div>
-            <div>Developed by Leo Thutchet</div>
-            <div className="footerSub">Powered by TUP Aura</div>
+            <div>Developed by ธัชเชษฐ์​ คงแขม ม.6/4</div>
+
           </div>
         </footer>
       </div>
