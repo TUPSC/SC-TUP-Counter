@@ -177,6 +177,19 @@ export default async function Home() {
       >
 
         <RealtimeTeams initialTeams={teams} />
+        <>
+  <div
+    style={{
+      color: "red",
+      fontSize: "40px",
+      textAlign: "center",
+    }}
+  >
+    Page Teams: {teams.length}
+  </div>
+
+  <RealtimeTeams initialTeams={teams} />
+</>
 
       </div>
 

@@ -1,445 +1,292 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
-export default function RealtimeTeams({ initialTeams }) {
+export default function RealtimeTeams({ initialTeams = [] }) {
+  const [teams, setTeams] = useState(initialTeams || []);
+  const [now, setNow] = useState(new Date());
 
-  /* =========================================================
-     STATE
-  ========================================================= */
+  const images = ["/p1.JPG", "/p2.JPG", "/p3.JPG", "/p4.JPG", "/p5.JPG"];
 
-  const [teams, setTeams] = useState(initialTeams);
+  const fetchTeams = async () => {
+    const { data, error } = await supabase
+      .from("team")
+      .select("*")
+      .order("id", { ascending: true });
 
-  const [viewMode, setViewMode] = useState("desktop");
+    if (error) {
+      console.error("Error fetching teams:", error);
+      return;
+    }
 
-  const isMobile = viewMode === "mobile";
-
-  /* =========================================================
-     FILTERED TEAMS
-  ========================================================= */
-
-  const filteredTeams = teams
-
-    .filter(
-      (team) =>
-        team.name !== "ไม่ประสงค์ลงคะแนน"
-    )
-
-    .sort((a, b) => a.id - b.id);
-
-  /* =========================================================
-     IMAGES
-  ========================================================= */
-
-  const images = [
-    "/p1.JPG",
-    "/p2.JPG",
-    "/p3.JPG",
-    "/p4.JPG",
-    "/p5.JPG",
-  ];
-
-  /* =========================================================
-     REALTIME
-  ========================================================= */
+    setTeams(data || []);
+  };
 
   useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(new Date());
+    }, 1000);
 
-    const channel = supabase
+    return () => clearInterval(timer);
+  }, []);
 
-      .channel("realtime teams")
+  useEffect(() => {
+    let channel;
 
-      .on(
+    const setupRealtime = async () => {
+      await fetchTeams();
+
+      await Promise.all(
+        supabase
+          .getChannels()
+          .filter((oldChannel) => oldChannel.topic.includes("realtime-team"))
+          .map((oldChannel) => supabase.removeChannel(oldChannel))
+      );
+
+      channel = supabase.channel(`realtime-team-${crypto.randomUUID()}`);
+
+      channel.on(
         "postgres_changes",
         {
           event: "*",
           schema: "public",
           table: "team",
         },
+        fetchTeams
+      );
 
-        async () => {
-
-          const { data } = await supabase
-            .from("team")
-            .select("*");
-
-          setTeams(data || []);
-        }
-      )
-
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
+      channel.subscribe();
     };
 
+    setupRealtime();
+
+    return () => {
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+    };
   }, []);
 
-  /* =========================================================
-     UI
-  ========================================================= */
+  const targetTime = new Date();
+  targetTime.setHours(13, 0, 0, 0);
+
+  const remainingMs = Math.max(targetTime.getTime() - now.getTime(), 0);
+  const hours = String(Math.floor(remainingMs / 1000 / 60 / 60)).padStart(2, "0");
+  const minutes = String(Math.floor((remainingMs / 1000 / 60) % 60)).padStart(2, "0");
+  const seconds = String(Math.floor((remainingMs / 1000) % 60)).padStart(2, "0");
+
+  const visibleTeams = Array.from({ length: 5 }, (_, index) => {
+    return teams[index] || {
+      id: `empty-${index}`,
+      score: 0,
+    };
+  });
 
   return (
-
-    <div
-      style={{
-
-        width: "100%",
-
-        display: "flex",
-
-        justifyContent: "center",
-
-        paddingTop: "34px",
-
-        paddingBottom: "70px",
-      }}
-    >
-
-      {/* =====================================================
-          MAIN PANEL
-      ===================================================== */}
-
-      <div
-        style={{
-
-          width: "96%",
-
-          maxWidth: "1500px",
-
-          background: "#f8f8f9",
-
-          borderRadius: "38px",
-
-          paddingTop: "40px",
-
-          paddingBottom: "40px",
-
-          paddingLeft:
-            isMobile
-              ? "18px"
-              : "28px",
-
-          paddingRight:
-            isMobile
-              ? "18px"
-              : "28px",
-
-          boxShadow:
-            "0 16px 50px rgba(0,0,0,0.10)",
-
-          position: "relative",
-        }}
-      >
-
-        {/* =====================================================
-            TOGGLE BAR
-        ===================================================== */}
-
-        <div
-          style={{
-
-            position: "absolute",
-
-            top: "-92px",
-
-            right: "24px",
-
-            display: "flex",
-
-            alignItems: "center",
-
-            background:
-              "rgba(255,255,255,0.08)",
-
-            backdropFilter: "blur(14px)",
-
-            border:
-              "1px solid rgba(255,255,255,0.08)",
-
-            borderRadius: "24px",
-
-            overflow: "hidden",
-
-            boxShadow:
-              "0 10px 24px rgba(0,0,0,0.20)",
-
-            zIndex: 999,
-          }}
-        >
-
-          {/* DESKTOP BUTTON */}
-
-          <button
-            onClick={() => setViewMode("desktop")}
-            style={{
-
-              border: "none",
-
-              background:
-                viewMode === "desktop"
-                  ? "#2563eb"
-                  : "transparent",
-
-              color: "white",
-
-              width: "95px",
-
-              height: "78px",
-
-              cursor: "pointer",
-
-              display: "flex",
-
-              flexDirection: "column",
-
-              alignItems: "center",
-
-              justifyContent: "center",
-
-              gap: "6px",
-
-              transition: "0.2s ease",
-            }}
-          >
-
-            <div
-              style={{
-                fontSize: "28px",
-              }}
-            >
-              💻
-            </div>
-
-            <div
-              style={{
-                fontSize: "14px",
-                fontWeight: "700",
-              }}
-            >
-              Desktop
-            </div>
-
-          </button>
-
-          {/* MOBILE BUTTON */}
-
-          <button
-            onClick={() => setViewMode("mobile")}
-            style={{
-
-              border: "none",
-
-              background:
-                viewMode === "mobile"
-                  ? "#2563eb"
-                  : "transparent",
-
-              color: "white",
-
-              width: "95px",
-
-              height: "78px",
-
-              cursor: "pointer",
-
-              display: "flex",
-
-              flexDirection: "column",
-
-              alignItems: "center",
-
-              justifyContent: "center",
-
-              gap: "6px",
-
-              transition: "0.2s ease",
-            }}
-          >
-
-            <div
-              style={{
-                fontSize: "28px",
-              }}
-            >
-              📱
-            </div>
-
-            <div
-              style={{
-                fontSize: "14px",
-                fontWeight: "700",
-              }}
-            >
-              Mobile
-            </div>
-
-          </button>
-
-        </div>
-
-        {/* =====================================================
-            GRID
-        ===================================================== */}
-
-        <div
-          style={{
-
-            display: "grid",
-
-            gridTemplateColumns:
-              isMobile
-                ? "1fr"
-                : "1fr 1fr",
-
-            columnGap:
-              isMobile
-                ? "18px"
-                : "30px",
-
-            rowGap:
-              isMobile
-                ? "22px"
-                : "30px",
-
-            alignItems: "center",
-          }}
-        >
-
-          {/* =================================================
-              TEAM CARDS
-          ================================================= */}
-
-          {filteredTeams.map((team, index) => (
-
+    <main className="page">
+      <div className="dashboard">
+        <header className="header">
+          <div className="timer">
+            {hours}:{minutes}:{seconds}
+          </div>
+        </header>
+
+        <section className="grid">
+          {visibleTeams.map((team, index) => (
             <div
               key={team.id}
-
-              style={{
-
-                width: "100%",
-
-                gridColumn:
-                  !isMobile &&
-                  index === filteredTeams.length - 1 &&
-                  filteredTeams.length % 2 !== 0
-                    ? "1 / span 2"
-                    : "auto",
-
-                maxWidth:
-                  !isMobile &&
-                  index === filteredTeams.length - 1 &&
-                  filteredTeams.length % 2 !== 0
-                    ? "760px"
-                    : "100%",
-
-                justifySelf:
-                  !isMobile &&
-                  index === filteredTeams.length - 1 &&
-                  filteredTeams.length % 2 !== 0
-                    ? "center"
-                    : "stretch",
-
-                backgroundImage:
-                  `url(${images[index]})`,
-
-                backgroundSize: "cover",
-
-                backgroundPosition: "center",
-
-                backgroundRepeat: "no-repeat",
-
-                borderRadius: "30px",
-
-                overflow: "hidden",
-
-                position: "relative",
-
-                minHeight:
-                  isMobile
-                    ? "220px"
-                    : "250px",
-
-                aspectRatio:
-                  isMobile
-                    ? "16 / 7"
-                    : "16 / 5",
-
-                boxShadow:
-                  "0 12px 34px rgba(0,0,0,0.12)",
-
-                transition: "0.22s ease",
-              }}
+              className={`card ${index === 4 ? "lastCard" : ""}`}
+              style={{ backgroundImage: `url(${images[index]})` }}
             >
-
-              {/* =============================================
-                  OVERLAY
-              ============================================= */}
-
-              <div
-                style={{
-
-                  position: "absolute",
-
-                  inset: 0,
-
-                  background:
-                    "linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.12))",
-                }}
-              />
-
-              {/* =============================================
-                  SCORE
-              ============================================= */}
-
-              <div
-                style={{
-
-                  position: "absolute",
-
-                  right:
-                    isMobile
-                      ? "9%"
-                      : "8%",
-
-                  top: "50%",
-
-                  transform: "translateY(-50%)",
-
-                  zIndex: 20,
-
-                  fontSize:
-                    isMobile
-                      ? "92px"
-                      : "112px",
-
-                  fontWeight: "900",
-
-                  color: "white",
-
-                  lineHeight: 1,
-
-                  textShadow:
-                    "0 10px 24px rgba(0,0,0,0.34)",
-                }}
-              >
-
-                {team.score}
-
-              </div>
-
+              <div className="overlay" />
+              <div className="score">{team.score ?? 0}</div>
             </div>
-
           ))}
+        </section>
 
-        </div>
+        <footer className="footer">
+          <img src="/footer_logo.png" alt="footer logo" className="footerLogo" />
 
+          <div className="footerText">
+            <div className="footerTitle">TUPSC Election Dashboard 2026</div>
+            <div>Developed by Leo Thutchet</div>
+            <div className="footerSub">Powered by TUP Aura</div>
+          </div>
+        </footer>
       </div>
 
-    </div>
+      <style jsx global>{`
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          background: #f6f6f6;
+          overflow: hidden;
+        }
+      `}</style>
 
+      <style jsx>{`
+        .page {
+          width: 100vw;
+          min-height: 100vh;
+          background: #f6f6f6;
+          padding: 12px 20px;
+          box-sizing: border-box;
+          overflow: hidden;
+        }
+
+        .dashboard {
+          width: min(76vw, 1180px);
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .header {
+          height: 44px;
+          border-radius: 16px;
+          background: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+        }
+
+        .timer {
+          color: #dc2626;
+          font-size: 30px;
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: 0;
+        }
+
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 14px 22px;
+        }
+
+        .card {
+          position: relative;
+          overflow: hidden;
+          border-radius: 22px;
+          aspect-ratio: 16 / 5.8;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .lastCard {
+          grid-column: 1 / span 2;
+          width: 54%;
+          justify-self: center;
+        }
+
+        .overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.02),
+            rgba(0, 0, 0, 0.1)
+          );
+        }
+
+        .score {
+          position: absolute;
+          right: 8%;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 2;
+          color: white;
+          font-size: clamp(52px, 4.7vw, 88px);
+          font-weight: 900;
+          line-height: 1;
+          text-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+          height: 64px;
+          border-radius: 18px;
+          overflow: hidden;
+          background-image:
+            linear-gradient(to right, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.24)),
+            url("/tup-aura (1).png");
+          background-size: cover;
+          background-position: center;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 24px;
+          box-sizing: border-box;
+          color: white;
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+        }
+
+        .footerLogo {
+          width: 70px;
+          max-height: 48px;
+          object-fit: contain;
+        }
+
+        .footerText {
+          text-align: right;
+          font-size: 11px;
+          opacity: 0.95;
+        }
+
+        .footerTitle {
+          font-size: 15px;
+          font-weight: 800;
+          margin-bottom: 2px;
+        }
+
+        .footerSub {
+          font-size: 10px;
+          opacity: 0.75;
+          margin-top: 1px;
+        }
+
+        @media (max-width: 900px) {
+          html,
+          body {
+            overflow-y: auto;
+          }
+
+          .page {
+            overflow: visible;
+            padding: 14px;
+          }
+
+          .dashboard {
+            width: 100%;
+          }
+
+          .grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+          }
+
+          .card,
+          .lastCard {
+            width: 100%;
+            aspect-ratio: 16 / 7;
+          }
+
+          .timer {
+            font-size: 26px;
+          }
+
+          .score {
+            font-size: 76px;
+          }
+        }
+      `}</style>
+    </main>
   );
 }
-//test
-//test2
