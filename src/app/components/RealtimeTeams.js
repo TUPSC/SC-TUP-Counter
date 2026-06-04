@@ -257,13 +257,13 @@ export default function RealtimeTeams({ initialTeams = [] }) {
 
         .score {
           position: absolute;
-          top: 75%;
+          top: 80%;
           left: 69%;
           transform: translate(-50%, -50%);
           z-index: 2;
           color: white;
           font-size: clamp(52px, 4.7vw, 88px);
-          font-weight: 900;
+          font-weight: 800;
           line-height: 1;
           text-align: center;
           text-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
