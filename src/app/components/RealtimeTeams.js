@@ -66,7 +66,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
   }, []);
 
   const targetTime = new Date();
-  targetTime.setHours(13, 0, 0, 0);
+  targetTime.setHours(16, 0, 0, 0);
 
   const remainingMs = Math.max(targetTime.getTime() - now.getTime(), 0);
   const hours = String(Math.floor(remainingMs / 1000 / 60 / 60)).padStart(2, "0");
