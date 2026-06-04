@@ -3,15 +3,14 @@ import Countdown from "./components/Countdown";
 import RealtimeTeams from "./components/RealtimeTeams";
 
 export default async function Home() {
-
   const { data } = await supabase
     .from("team")
-    .select("*");
+    .select("*")
+    .order("id", { ascending: true });
 
   const teams = data || [];
 
   return (
-
     <main
       style={{
         minHeight: "100vh",
@@ -20,36 +19,22 @@ export default async function Home() {
         fontFamily: "Arial, sans-serif",
       }}
     >
-
       {/* HEADER */}
       <div
         style={{
           width: "100%",
-          background:
-            "linear-gradient(90deg,#020817,#071633,#020817)",
-
+          background: "linear-gradient(90deg,#020817,#071633,#020817)",
           padding: "16px 28px",
-
           boxSizing: "border-box",
-
           display: "grid",
-
           gridTemplateColumns: "1fr auto 1fr",
-
           alignItems: "center",
-
           position: "sticky",
-
           top: 0,
-
           zIndex: 9999,
-
-          boxShadow:
-            "0 10px 30px rgba(0,0,0,0.18)",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
         }}
       >
-
-        {/* LEFT */}
         <div
           style={{
             display: "flex",
@@ -57,7 +42,6 @@ export default async function Home() {
             gap: "18px",
           }}
         >
-
           <img
             src="/logo.png"
             alt="logo"
@@ -67,7 +51,6 @@ export default async function Home() {
           />
 
           <div>
-
             <h1
               style={{
                 color: "white",
@@ -83,6 +66,7 @@ export default async function Home() {
             <p
               style={{
                 marginTop: "8px",
+                marginBottom: 0,
                 color: "#8ea4ff",
                 fontSize: "14px",
                 letterSpacing: "1.5px",
@@ -90,12 +74,9 @@ export default async function Home() {
             >
               LIVE STUDENT COUNCIL VOTE COUNT
             </p>
-
           </div>
-
         </div>
 
-        {/* CENTER CLOCK */}
         <div
           style={{
             display: "flex",
@@ -103,97 +84,23 @@ export default async function Home() {
             alignItems: "center",
           }}
         >
-
-          <div
-            style={{
-              transform: "scale(0.82)",
-            }}
-          >
+          <div style={{ transform: "scale(0.82)" }}>
             <Countdown />
           </div>
-
         </div>
 
-        {/* RIGHT TOGGLE */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            paddingRight: "24px",
-          }}
-        >
-
-          <div
-            style={{
-              display: "flex",
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: "22px",
-              overflow: "hidden",
-              backdropFilter: "blur(12px)",
-            }}
-          >
-
-            <button
-              style={{
-                border: "none",
-                background: "#2563eb",
-                color: "white",
-                padding: "16px 20px",
-                cursor: "pointer",
-                fontSize: "16px",
-                fontWeight: "700",
-              }}
-            >
-              💻
-            </button>
-
-            <button
-              style={{
-                border: "none",
-                background: "transparent",
-                color: "white",
-                padding: "16px 20px",
-                cursor: "pointer",
-                fontSize: "16px",
-                fontWeight: "700",
-              }}
-            >
-              📱
-            </button>
-
-          </div>
-
-        </div>
-
+        <div />
       </div>
 
       {/* CONTENT */}
       <div
         style={{
           width: "100%",
-          padding: "12px 0 50px 0",
+          padding: "12px 0 28px 0",
         }}
       >
-
         <RealtimeTeams initialTeams={teams} />
-        <>
-  <div
-    style={{
-      color: "red",
-      fontSize: "40px",
-      textAlign: "center",
-    }}
-  >
-    Page Teams: {teams.length}
-  </div>
-
-  <RealtimeTeams initialTeams={teams} />
-</>
-
       </div>
-
     </main>
-
   );
 }
