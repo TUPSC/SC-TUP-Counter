@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
 export default function RealtimeTeams({ initialTeams = [] }) {
   const [teams, setTeams] = useState(initialTeams || []);
   const [now, setNow] = useState(new Date());
   const [viewMode, setViewMode] = useState("desktop");
+  const channelRef = useRef(null);
 
   const isMobile = viewMode === "mobile";
   const images = ["/p1.JPG", "/p2.JPG", "/p3.JPG", "/p4.JPG", "/p5.JPG"];
@@ -26,42 +27,64 @@ export default function RealtimeTeams({ initialTeams = [] }) {
   };
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 1000);
+    const timer = setInterval(() => {
+      setNow(new Date());
+    }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
-    let channel;
+    fetchTeams();
 
-    const setupRealtime = async () => {
-      await fetchTeams();
-
-      await Promise.all(
-        supabase
-          .getChannels()
-          .filter((oldChannel) => oldChannel.topic.includes("realtime-team"))
-          .map((oldChannel) => supabase.removeChannel(oldChannel))
-      );
-
-      channel = supabase.channel(`realtime-team-${crypto.randomUUID()}`);
-
-      channel.on(
+    const channel = supabase
+      .channel(`team-score-updates-${Date.now()}`)
+      .on(
         "postgres_changes",
         {
           event: "*",
           schema: "public",
           table: "team",
         },
-        fetchTeams
-      );
+        (payload) => {
+          setTeams((currentTeams) => {
+            if (payload.eventType === "INSERT") {
+              const exists = currentTeams.some(
+                (team) => team.id === payload.new.id
+              );
 
-      channel.subscribe();
-    };
+              if (exists) return currentTeams;
 
-    setupRealtime();
+              return [...currentTeams, payload.new].sort((a, b) => a.id - b.id);
+            }
+
+            if (payload.eventType === "UPDATE") {
+              return currentTeams
+                .map((team) =>
+                  team.id === payload.new.id ? payload.new : team
+                )
+                .sort((a, b) => a.id - b.id);
+            }
+
+            if (payload.eventType === "DELETE") {
+              return currentTeams.filter((team) => team.id !== payload.old.id);
+            }
+
+            return currentTeams;
+          });
+        }
+      )
+      .subscribe((status) => {
+        console.log("Realtime status:", status);
+      });
+
+    channelRef.current = channel;
 
     return () => {
-      if (channel) supabase.removeChannel(channel);
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
     };
   }, []);
 
@@ -69,15 +92,26 @@ export default function RealtimeTeams({ initialTeams = [] }) {
   targetTime.setHours(16, 0, 0, 0);
 
   const remainingMs = Math.max(targetTime.getTime() - now.getTime(), 0);
-  const hours = String(Math.floor(remainingMs / 1000 / 60 / 60)).padStart(2, "0");
-  const minutes = String(Math.floor((remainingMs / 1000 / 60) % 60)).padStart(2, "0");
-  const seconds = String(Math.floor((remainingMs / 1000) % 60)).padStart(2, "0");
+
+  const hours = String(
+    Math.floor(remainingMs / 1000 / 60 / 60)
+  ).padStart(2, "0");
+
+  const minutes = String(
+    Math.floor((remainingMs / 1000 / 60) % 60)
+  ).padStart(2, "0");
+
+  const seconds = String(
+    Math.floor((remainingMs / 1000) % 60)
+  ).padStart(2, "0");
 
   const visibleTeams = Array.from({ length: 5 }, (_, index) => {
-    return teams[index] || {
-      id: `empty-${index}`,
-      score: 0,
-    };
+    return (
+      teams[index] || {
+        id: `empty-${index}`,
+        score: 0,
+      }
+    );
   });
 
   return (
@@ -244,7 +278,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           transform: translate(-50%, -50%);
           z-index: 2;
           color: white;
-          font-size: clamp(42px, 4vw, 74px);
+          font-size: clamp(40px, 3.8vw, 68px);
           font-weight: 800;
           line-height: 1;
           text-align: center;
@@ -321,7 +355,7 @@ export default function RealtimeTeams({ initialTeams = [] }) {
         }
 
         .mobileMode .score {
-          font-size: 62px;
+          font-size: 58px;
         }
 
         .mobileMode .header {
@@ -354,12 +388,10 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           }
 
           .score {
-            font-size: 62px;
+            font-size: 58px;
           }
         }
       `}</style>
     </main>
   );
 }
-
-//test
