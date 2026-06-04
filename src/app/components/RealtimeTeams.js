@@ -196,18 +196,35 @@ export default function RealtimeTeams({ initialTeams = [] }) {
           );
         }
 
-        .score {
-          position: absolute;
-          right: 8%;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 2;
-          color: white;
-          font-size: clamp(52px, 4.7vw, 88px);
-          font-weight: 900;
-          line-height: 1;
-          text-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
-        }
+  .score {
+  position: absolute;
+  top: 75%;
+  left: 69%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  color: white;
+  font-size: clamp(52px, 4.7vw, 88px);
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+}
+
+/* red card */
+.score1 {
+  left: 75%;
+}
+
+/* blue card */
+.score3 {
+  left: 76%;
+}
+
+/* fifth centered card */
+.score4 {
+  left: 72%;
+  top: 67%;
+}
 
         .footer {
           height: 64px;
